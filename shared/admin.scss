@@ -1,0 +1,17 @@
+// Normalizing the styling
+@import '~normalize.css/normalize.css';
+
+// Base files
+@import './base/colors.scss';
+@import './base/fonts.scss';
+@import './base/mixins.scss';
+@import './base/config.scss';
+
+// Libraries
+@import '~primeng/resources/themes/arya-purple/theme.css';
+@import '~primeng/resources/primeng.min.css';
+@import '~primeicons/primeicons.css';
+@import '~primeflex/primeflex.css';
+
+// Admin panel styling files
+@import './admin/shell.scss';

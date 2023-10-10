@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+@import '../../../shared/admin-global.scss';
+.admin-{
+    &footer{
+        min-height: 2rem;
+        max-height: 2rem;
+        min-width: 100%;
+        max-width: 100%;
+        bottom: 0;
+        text-align: center;
+        padding-top: 2px;
+    }
+}
