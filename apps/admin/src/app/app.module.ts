@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { appRoutes } from './app.routes';
 
 import { HttpClientModule } from '@angular/common/http';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { TableModule } from 'primeng/table';
 
 import { AppComponent } from './app.component';
 import { DashbaordComponent } from './pages/dashbaord/dashbaord.component';
@@ -32,7 +32,7 @@ import { ProductListComponent } from './pages/products/product-list/product-list
     BrowserModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
     HttpClientModule,
-    NgxDatatableModule,
+    TableModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

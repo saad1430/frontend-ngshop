@@ -1,1 +1,24 @@
-category form works
+<div class="card">
+    <div class="card-body">
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <h5>
+                    Add Category
+                </h5>
+                <p class="col-11">Add a new category</p>
+                <a class="float-end btn btn-sm btn-danger col-1 p-2" onclick="history.back()"><i
+                        class="fa fa-x"></i>
+                    Cancel</a>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr><th>Icon</th></tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let icon of icons"><td>{{icon.icons}}</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,30 +1,46 @@
 <div class="card">
   <div class="card-body">
-    <h5>
-      Categories ({{categories.length}})
-    </h5>
-    <p>List of all available categories</p>
-  </div>
-  <ngx-datatable style="width: 100%;" [rows]="categories" [columns]="categoriesModel" [loadingIndicator]="loadingIndicator" [headerHeight]="40" rowHeight="auto" class="bootstrap">
-  </ngx-datatable>
-  <!-- <table id="myTable" class="table border table-striped table-bordered table-hover display nowrap" style="width: 100%">
-    <thead>
-      <tr>
-        <th>S.N</th>
-        <th>Name</th>
-        <th>Image</th>
-        <th>Icon</th>
-        <th>Color</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let cat of categories; index as i">
-        <td>{{ i+1 }}</td>
+    <div class="container-fluid">
+      <div class="row mb-3">
+      <h5>
+        Categories ({{categories.length}})
+      </h5>
+        <p class="col-11">List of all available categories</p>
+        <a class="float-end btn btn-sm btn-success col-1 p-2" routerLink="/categories/new"><i class="fa fa-plus"></i>
+          Add</a>
+      </div>
+    </div>
+
+    <p-table [value]="categories" [tableStyle]="{'min-width': '60rem'}"
+      tableStyleClass="table table-striped table-bordered table-hover">
+      <ng-template pTemplate="header">
+        <tr>
+
+          <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>
+          <th style="width:20%">Image </th>
+          <th style="width:20%">Icon </th>
+          <th style="width:20%">Color </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-cat>
+        <tr>
           <td>{{ cat.name }}</td>
           <td><img src="{{ cat.image }}" alt="{{ cat.name }} Image"></td>
           <td><i class="{{ cat.icon }}"></i></td>
           <td><input type="color" name="color" value="{{ cat.color }}" disabled></td>
         </tr>
-    </tbody>
-  </table> -->
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="4" class="text-center">
+            <div class="no-data-message">
+              <h5><i class="fa fa-info-circle"></i>
+                <b class="text-danger"> No data found. Please try again later.</b>
+              </h5>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 </div>
