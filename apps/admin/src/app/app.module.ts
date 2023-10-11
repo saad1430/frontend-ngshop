@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { appRoutes } from './app.routes';
 
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { TableModule } from 'primeng/table';
 
 import { AppComponent } from './app.component';
@@ -30,6 +32,8 @@ import { ProductListComponent } from './pages/products/product-list/product-list
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
     HttpClientModule,
     TableModule,

@@ -6,19 +6,70 @@
                     Add Category
                 </h5>
                 <p class="col-11">Add a new category</p>
-                <a class="float-end btn btn-sm btn-danger col-1 p-2" onclick="history.back()"><i
-                        class="fa fa-x"></i>
+                <a class="float-end btn btn-sm btn-outline-danger  col-1 p-2" onclick="history.back()"><i class="far fa-x"></i>
                     Cancel</a>
             </div>
         </div>
 
-        <table>
-            <thead>
-                <tr><th>Icon</th></tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let icon of icons"><td>{{icon.icons}}</td></tr>
-            </tbody>
-        </table>
+        <div class="card">
+            <div class="card-header bg-danger">
+                <h4 class="mb-0 text-white">Enter Details of category</h4>
+            </div>
+            <div class="card-body">
+                <form [formGroup]="form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="name" name="name" formControlName="name"
+                                    placeholder="Enter Name here" />
+                                <label for="name">Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating input-group mb-3">
+                                <select class="form-select" name="icon" id="icon" formControlName="icon">
+                                    <option hidden selected>-- Choose Icon --</option>
+                                    <option style="padding: 5px;" *ngFor="let icon of icons" value="{{icon.icon}}">
+                                        {{icon.name}}</option>
+                                </select>
+                                <label for="icon">Icon (to make it more interactive select an icon and then use arrow
+                                    keys to navigate)</label>
+                                <span class="input-group-text text-center"
+                                    style="min-width: 60px; text-align: center;">&nbsp;<i class="{{ selectedIcon }}">
+                                    </i></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="color" class="form-control" name="color" id="color" placeholder="Color" formControlName="color"/>
+                                <label for="color">Color</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="file" class="form-control" id="image" name="image" placeholder="Image" formControlName="image"
+                                    accept="image/jpg, image/png, image/jpeg, jpg, png" hidden />
+                                <button onclick="image.click()"
+                                    class="btn btn-outline-danger col-12 form-control ">Select Image</button>
+                                <label for="color">Image</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-md-flex align-items-center mt-3">
+                                <div class="ms-auto mt-3 mt-md-0">
+                                    <button type="submit" class="btn btn-success font-medium px-4" (click)="onSubmit()">
+                                        <div class="d-flex align-items-center">
+                                            <i class="far fa-save me-2"></i>
+                                            Save
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </div>
 </div>

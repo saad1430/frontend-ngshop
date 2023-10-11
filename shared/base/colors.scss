@@ -1,2 +1,45 @@
 $primary-color: #ff0022;
 $primary-color-darker: #c7001b;
+// colors
+$white: #fff !default;
+$gray-100: #F6F9FC !default; 
+$gray-200: #EAEFF4 !default; 
+$gray-300: #DFE5EF !default; 
+$gray-400: #7C8FAC !default; 
+$gray-500: #5A6A85 !default; 
+$gray-600: #2A3547 !default; 
+$black: #000 !default;
+
+// Color
+$blue: #5D87FF !default;
+$indigo: #6610f2 !default;
+$purple: #6f42c1 !default;
+$pink: #d63384 !default;
+$red: #FA896B !default;
+$orange: #fd7e14 !default;
+$yellow: #FFAE1F !default;
+$green: #13DEB9 !default;
+$teal: #20c997 !default;
+$cyan: #539BFF !default;
+
+// Main Colors
+$primary: $blue !default;
+$secondary: #49BEFF !default;
+$success: $green !default;
+$info: $cyan !default;
+$warning: $yellow !default;
+$danger: $red !default;
+$light: $gray-100 !default;
+$muted: $gray-500 !default;
+$dark: $gray-600 !default;
+$dark-light: $gray-600 !default;
+$light-gray: $gray-100 !default;
+
+// light colors
+$light-primary: #ECF2FF;
+$light-secondary: #E8F7FF;
+$light-info: #EBF3FE;
+$light-success: #E6FFFA;
+$light-warning: #FEF5E5;
+$light-danger: #FBF2EF;
+$light-indigo: #EBF3FE;

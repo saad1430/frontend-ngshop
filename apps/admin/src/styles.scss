@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+// Global admin files
 @import '../../../shared/admin-global.scss';
+// Font Awesome Icons
+@import './icons/css/all.min.css';
+// Custom CSS
 .admin-{
     &footer{
         min-height: 2rem;
@@ -10,4 +14,7 @@
         text-align: center;
         padding-top: 2px;
     }
+}
+.active{
+    color: var(--bs-danger) !important;
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CategoriesService, Icons } from '@ecommerce/products';
 
 @Component({
@@ -7,10 +8,31 @@ import { CategoriesService, Icons } from '@ecommerce/products';
 })
 export class CategoryFormComponent implements OnInit {
   icons: Icons[] = [];
-  constructor(private categoryService: CategoriesService) {}
+  selectedIcon: string;
+  form: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private categoryService: CategoriesService
+  ) {}
+
   ngOnInit(): void {
     this.categoryService.getIcons().subscribe((icon) => {
       this.icons = icon;
     });
+    this.form = this.fb.group({
+      name: ['', Validators.required],
+      icon: [this.selectedIcon, Validators.required],
+      color: ['#000000', Validators.required],
+      image: [''],
+    });
+    this.form.get('icon').valueChanges.subscribe((value) => {
+      this.selectedIcon = value;
+    });
+
   }
+  onSubmit(){
+    console.log(this.form.controls);
+    
+  };
 }
