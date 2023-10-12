@@ -1,13 +1,14 @@
+<p-toast></p-toast>
 <div class="card">
     <div class="card-body">
         <div class="container-fluid">
             <div class="row mb-3">
                 <h5>
-                    Add Category
+                    <span *ngIf="editMode;else updateTitle">Update</span><ng-template #updateTitle>Add</ng-template> Category
                 </h5>
-                <p class="col-11">Add a new category</p>
-                <a class="float-end btn btn-sm btn-outline-danger  col-1 p-2" onclick="history.back()"><i class="far fa-x"></i>
-                    Cancel</a>
+                <p class="col-11"><span *ngIf="editMode;else updateSubTitle">Update</span><ng-template #updateSubTitle>Add a new</ng-template> category</p>
+                <a class="float-end btn btn-sm btn-outline-danger col-1 p-2" onclick="history.back()"><i
+                        class="far fa-arrow-left">&nbsp;</i>Back</a>
             </div>
         </div>
 
@@ -20,48 +21,72 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="name" name="name" formControlName="name"
+                                <input type="text"
+                                    [ngClass]="{'is-invalid': catForm.name.invalid && catForm.name.dirty || catForm.name.invalid && isSubmitted, 'is-valid': catForm.name.valid && catForm.name.dirty}"
+                                    class="form-control" id="name" name="name" formControlName="name"
                                     placeholder="Enter Name here" />
-                                <label for="name">Name</label>
+                                <label for="name">Name <small class="text-danger">*</small></label>
+                                <small class="invalid-feedback"
+                                    *ngIf="catForm.name.hasError('required') && catForm.name.dirty || catForm.name.hasError('required') && isSubmitted">Name
+                                    is required</small>
+                                <small class="invalid-feedback"
+                                    *ngIf="catForm.name.hasError('minlength') && catForm.name.dirty">Minimum length is 3
+                                    characters.</small>
+                                <small class="invalid-feedback"
+                                    *ngIf="catForm.name.hasError('maxlength') && catForm.name.dirty">Maximum length is
+                                    50 characters.</small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating input-group mb-3">
-                                <select class="form-select" name="icon" id="icon" formControlName="icon">
+                                <select class="form-select" name="icon" id="icon" formControlName="icon"
+                                    [ngClass]="{'is-invalid': catForm.icon.invalid && catForm.icon.dirty || catForm.icon.invalid && isSubmitted, 'is-valid': catForm.icon.valid && catForm.icon.dirty}">
                                     <option hidden selected>-- Choose Icon --</option>
                                     <option style="padding: 5px;" *ngFor="let icon of icons" value="{{icon.icon}}">
                                         {{icon.name}}</option>
                                 </select>
                                 <label for="icon">Icon (to make it more interactive select an icon and then use arrow
-                                    keys to navigate)</label>
-                                <span class="input-group-text text-center"
-                                    style="min-width: 60px; text-align: center;">&nbsp;<i class="{{ selectedIcon }}">
-                                    </i></span>
+                                    keys to navigate) <small class="text-danger">*</small></label>
+                                <span class="input-group-text text-center" style="min-width: 60px; text-align: center;">
+                                    &nbsp;<i class="{{ catForm.icon.value }} fs-3 zoom-image"></i>
+                                </span>
+                                <small class="invalid-feedback"
+                                    *ngIf="catForm.icon.invalid && catForm.icon.dirty || catForm.icon.invalid && isSubmitted">Icon
+                                    is required</small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="color" class="form-control" name="color" id="color" placeholder="Color" formControlName="color"/>
-                                <label for="color">Color</label>
+                                <input type="color" class="form-control" name="color" id="color" placeholder="Color"
+                                    formControlName="color"
+                                    [ngClass]="{'is-invalid': catForm.color.invalid && catForm.color.dirty || catForm.color.invalid && isSubmitted, 'is-valid': catForm.color.valid && catForm.color.dirty}" />
+                                <label for="color">Color <small class="text-danger">*</small></label>
+                                <small class="invalid-feedback"
+                                    *ngIf="catForm.color.invalid && catForm.color.dirty || catForm.color.invalid && isSubmitted">Color
+                                    is required</small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <input type="file" class="form-control" id="image" name="image" placeholder="Image" formControlName="image"
-                                    accept="image/jpg, image/png, image/jpeg, jpg, png" hidden />
+                                <input type="file" class="form-control" id="image" name="image" placeholder="Image"
+                                    formControlName="image" accept="image/jpg, image/png, image/jpeg, jpg, png"
+                                    hidden />
                                 <button onclick="image.click()"
-                                    class="btn btn-outline-danger col-12 form-control ">Select Image</button>
+                                    class="btn btn-outline-secondary text-dark col-12 form-control">Select
+                                    Image</button>
                                 <label for="color">Image</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="d-md-flex align-items-center mt-3">
                                 <div class="ms-auto mt-3 mt-md-0">
-                                    <button type="submit" class="btn btn-success font-medium px-4" (click)="onSubmit()">
-                                        <div class="d-flex align-items-center">
-                                            <i class="far fa-save me-2"></i>
-                                            Save
-                                        </div>
+                                    <button *ngIf="!editMode" type="submit" class="btn btn-success font-medium px-4" (click)="onSubmit()"
+                                        [disabled]="isValid" id="submit-btn">
+                                        <i class="far fa-save me-2"></i> Save
+                                    </button>
+                                    <button *ngIf="editMode" type="submit" class="btn btn-success font-medium px-4" (click)="onSubmit()"
+                                        [disabled]="isValid" id="submit-btn">
+                                        <i class="far fa-save me-2"></i> Update
                                     </button>
                                 </div>
                             </div>

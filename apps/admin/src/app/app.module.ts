@@ -2,11 +2,15 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './app.routes';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { AppComponent } from './app.component';
 import { DashbaordComponent } from './pages/dashbaord/dashbaord.component';
@@ -17,6 +21,13 @@ import { CategoryListComponent } from './pages/categories/category-list/category
 import { CategoryFormComponent } from './pages/categories/category-form/category-form.component';
 import { ProductFormComponent } from './pages/products/product-form/product-form.component';
 import { ProductListComponent } from './pages/products/product-list/product-list.component';
+
+const UX_MODULES = [
+  TableModule,
+  ToastModule,
+  TooltipModule,
+  ConfirmDialogModule,
+];
 
 @NgModule({
   declarations: [
@@ -32,13 +43,14 @@ import { ProductListComponent } from './pages/products/product-list/product-list
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
     HttpClientModule,
-    TableModule,
+    UX_MODULES,
   ],
-  providers: [],
+  providers: [MessageService, ConfirmationService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

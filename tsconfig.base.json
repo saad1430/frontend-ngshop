@@ -10,30 +10,18 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ecommerce/orders": [
-        "libs/orders/src/index.ts"
-      ],
-      "@ecommerce/products": [
-        "libs/products/src/index.ts"
-      ],
-      "@ecommerce/ui": [
-        "libs/ui/src/index.ts"
-      ],
-      "@ecommerce/users": [
-        "libs/users/src/index.ts"
-      ]
+      "@ecommerce/connector": ["libs/connector/src/index.ts"],
+      "@ecommerce/orders": ["libs/orders/src/index.ts"],
+      "@ecommerce/products": ["libs/products/src/index.ts"],
+      "@ecommerce/ui": ["libs/ui/src/index.ts"],
+      "@ecommerce/users": ["libs/users/src/index.ts"],
+      "@frontend/connector": ["libs/connector/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

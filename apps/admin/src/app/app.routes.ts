@@ -15,6 +15,7 @@ export const appRoutes: Route[] = [
       { path: 'dashboard', component: DashbaordComponent },
       { path: 'categories', component: CategoryListComponent },
       { path: 'categories/new', component: CategoryFormComponent },
+      { path: 'categories/edit/:id', component: CategoryFormComponent },
       { path: 'products', component: ProductListComponent },
       { path: 'products/new', component: ProductFormComponent },
     ],

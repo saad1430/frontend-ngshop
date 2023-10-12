@@ -1,10 +1,11 @@
+<p-toast></p-toast>
 <div class="card">
   <div class="card-body">
     <div class="container-fluid">
       <div class="row mb-3">
-      <h5>
-        Categories ({{categories.length}})
-      </h5>
+        <h5>
+          Categories ({{categories.length}})
+        </h5>
         <p class="col-11">List of all available categories</p>
         <a class="float-end btn btn-sm btn-success col-1 p-2" routerLink="/categories/new"><i class="fa fa-plus"></i>
           Add</a>
@@ -12,22 +13,30 @@
     </div>
 
     <p-table [value]="categories" [tableStyle]="{'min-width': '60rem'}"
-      tableStyleClass="table table-striped table-bordered table-hover">
+      tableStyleClass="table table-striped table-bordered table-hover table-secondary shadow">
       <ng-template pTemplate="header">
         <tr>
-
-          <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>
+          <th style="width: 5%;" class="text-center">S.N</th>
+          <th style="width:20%" pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
           <th style="width:20%">Image </th>
           <th style="width:20%">Icon </th>
-          <th style="width:20%">Color </th>
+          <th style="width:10%">Color </th>
+          <th style="width:10%" class="text-center">Actions </th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-cat>
+      <ng-template pTemplate="body" let-cat let-rowIndex="rowIndex">
         <tr>
+          <td class="text-center">{{ rowIndex+1 }}</td>
           <td>{{ cat.name }}</td>
-          <td><img src="{{ cat.image }}" alt="{{ cat.name }} Image"></td>
+          <td><img *ngIf="cat.image; else elseImage" src="{{ cat.image }}" alt="{{ cat.name }} Image" height="50">
+            <ng-template #elseImage>No Image inserted</ng-template>
+          </td>
           <td><i class="{{ cat.icon }}"></i></td>
-          <td><input type="color" name="color" value="{{ cat.color }}" disabled></td>
+          <td><input class="form-control-color" type="color" name="color" value="{{ cat.color }}" disabled></td>
+          <td class="text-center"><a (click)="editCategory(cat.id)" class="btn btn-sm btn-warning"
+              pTooltip="Edit" tooltipPosition="top"><i class="far fa-edit"></i></a>
+            &nbsp;<a (click)="deleteCategory(cat.id)" class="btn btn-sm btn-danger" pTooltip="Delete"
+              tooltipPosition="top"><i class="far fa-trash"></i></a></td>
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
@@ -44,3 +53,4 @@
     </p-table>
   </div>
 </div>
+<p-confirmDialog></p-confirmDialog>

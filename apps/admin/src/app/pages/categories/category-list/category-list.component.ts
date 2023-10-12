@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoriesService, Category } from '@ecommerce/products';
+import { ToastService } from '../../../services/toast.service';
+import { ConfirmationService } from 'primeng/api';
+import { Router } from '@angular/router';
 // import { SortEvent } from 'primeng/api';
 
 @Component({
@@ -10,13 +13,58 @@ export class CategoryListComponent implements OnInit {
   loading = true;
   categories: Category[] = [];
 
-  constructor(private categoryService: CategoriesService) {}
+  constructor(
+    private categoryService: CategoriesService,
+    private toast: ToastService,
+    private confirmationService: ConfirmationService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.getCategories();
+  }
+
+  private getCategories() {
     this.categoryService.getCategories().subscribe((cats) => {
       this.categories = cats;
       this.loading = false;
     });
+  }
+
+  deleteCategory(id: string) {
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this category?',
+      header: 'Delete Category',
+      icon: 'far fa-exclamation-triangle',
+      acceptButtonStyleClass: 'btn btn-danger me-1',
+      rejectButtonStyleClass: 'btn btn-success me-1',
+      closeOnEscape: true,
+      accept: () => {
+        this.proceedDeletion(id);
+      },
+      reject: () => {
+        this.toast.showWarn('Category deletion cancelled!');
+      },
+    });
+  }
+
+  private proceedDeletion(id: string) {
+    this.categoryService.deleteCategory(id).subscribe({
+      next: () => {
+        this.toast.showSuccess('Category deleted successfully');
+        this.getCategories();
+      },
+      error: (error) => {
+        this.toast.showError("Category couldn't be deleted");
+        console.warn(error);
+        this.getCategories();
+      },
+    });
+  }
+
+  editCategory(id: string) {
+    console.log(id);
+    this.router.navigateByUrl(`/categories/edit/${id}`);
   }
 
   // customSort(event: SortEvent) {

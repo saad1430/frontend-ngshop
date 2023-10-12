@@ -1,3 +1,4 @@
 export class Icons {
-  icons?: string;
+  icon?: string;
+  name?: string;
 }
