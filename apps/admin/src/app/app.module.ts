@@ -11,6 +11,8 @@ import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { ImageModule } from 'primeng/image';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 import { AppComponent } from './app.component';
 import { DashbaordComponent } from './pages/dashbaord/dashbaord.component';
@@ -23,34 +25,36 @@ import { ProductFormComponent } from './pages/products/product-form/product-form
 import { ProductListComponent } from './pages/products/product-list/product-list.component';
 
 const UX_MODULES = [
-  TableModule,
-  ToastModule,
-  TooltipModule,
-  ConfirmDialogModule,
+	TableModule,
+	ToastModule,
+	TooltipModule,
+	ImageModule,
+	ConfirmDialogModule,
+	InputNumberModule,
 ];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DashbaordComponent,
-    ShellComponent,
-    SidebarComponent,
-    FooterComponent,
-    CategoryListComponent,
-    CategoryFormComponent,
-    ProductFormComponent,
-    ProductListComponent,
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
-    HttpClientModule,
-    UX_MODULES,
-  ],
-  providers: [MessageService, ConfirmationService],
-  bootstrap: [AppComponent],
+	declarations: [
+		AppComponent,
+		DashbaordComponent,
+		ShellComponent,
+		SidebarComponent,
+		FooterComponent,
+		CategoryListComponent,
+		CategoryFormComponent,
+		ProductFormComponent,
+		ProductListComponent,
+	],
+	imports: [
+		BrowserModule,
+		BrowserAnimationsModule,
+		FormsModule,
+		ReactiveFormsModule,
+		RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
+		HttpClientModule,
+		UX_MODULES,
+	],
+	providers: [MessageService, ConfirmationService],
+	bootstrap: [AppComponent],
 })
 export class AppModule {}

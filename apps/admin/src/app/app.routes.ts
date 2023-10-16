@@ -8,16 +8,17 @@ import { ProductListComponent } from './pages/products/product-list/product-list
 import { ProductFormComponent } from './pages/products/product-form/product-form.component';
 
 export const appRoutes: Route[] = [
-  {
-    path: '',
-    component: ShellComponent,
-    children: [
-      { path: 'dashboard', component: DashbaordComponent },
-      { path: 'categories', component: CategoryListComponent },
-      { path: 'categories/new', component: CategoryFormComponent },
-      { path: 'categories/edit/:id', component: CategoryFormComponent },
-      { path: 'products', component: ProductListComponent },
-      { path: 'products/new', component: ProductFormComponent },
-    ],
-  },
+	{
+		path: '',
+		component: ShellComponent,
+		children: [
+			{ path: 'dashboard', component: DashbaordComponent },
+			{ path: 'categories', component: CategoryListComponent },
+			{ path: 'categories/new', component: CategoryFormComponent },
+			{ path: 'categories/edit/:id', component: CategoryFormComponent },
+			{ path: 'products', component: ProductListComponent },
+			{ path: 'products/new', component: ProductFormComponent },
+			{ path: 'products/edit/:id', component: ProductFormComponent },
+		],
+	},
 ];

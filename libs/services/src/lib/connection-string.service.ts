@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ConnectionStringService {
-  API_URL = 'http://localhost:3000/api/v1/';
+  INIT_URL = 'http://localhost:3000';
+  API_URL = `${this.INIT_URL}/api/v1/`;
   // constructor() { }
 }

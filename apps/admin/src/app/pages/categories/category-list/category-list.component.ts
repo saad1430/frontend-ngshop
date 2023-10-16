@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoriesService, Category } from '@ecommerce/products';
-import { ToastService } from '../../../services/toast.service';
+import { ToastService } from '@ecommerce/services';
 import { ConfirmationService } from 'primeng/api';
 import { Router } from '@angular/router';
 // import { SortEvent } from 'primeng/api';

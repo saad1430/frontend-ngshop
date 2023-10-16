@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriesService, Category, Icons } from '@ecommerce/products';
-import { take, timer } from 'rxjs';
-import { ToastService } from '../../../services/toast.service';
+import { ToastService } from '@ecommerce/services';
 
 @Component({
   selector: 'admin-category-form',
   templateUrl: './category-form.component.html',
 })
 export class CategoryFormComponent implements OnInit {
+  loading = false;
   icons: Icons[] = [];
   form!: FormGroup;
   isSubmitted = false;
@@ -26,10 +26,16 @@ export class CategoryFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this._initForm();
+  }
+
+  private _initForm(){
+    this.loading = true;
     this._getIcons();
-    this._checkNoIcons();
-    this._checkEditMode();
-    this._formBuilder();
+		this._formBuilder();
+		this._checkNoIcons();
+		this._checkEditMode();
+    this.loading = false;
   }
 
   get catForm() {
@@ -118,12 +124,8 @@ export class CategoryFormComponent implements OnInit {
       next: (category: Category) => {
         this.toast.showSuccess(
           `Category '${category.name}' added successfully`
-        );
-        timer(2000)
-          .pipe(take(1))
-          .subscribe(() => {
-            this.router.navigateByUrl('/categories');
-          });
+          );
+          this.router.navigateByUrl('/categories');
       },
       error: (error) => {
         this.toast.showError("Category couldn't be added");
@@ -144,11 +146,7 @@ export class CategoryFormComponent implements OnInit {
         this.toast.showSuccess(
           `Category '${category.name}' updated successfully`
         );
-        timer(2000)
-          .pipe(take(1))
-          .subscribe(() => {
-            this.router.navigateByUrl('/categories');
-          });
+        this.router.navigateByUrl('/categories');
       },
       error: (error) => {
         this.toast.showError("Category couldn't be updated");
