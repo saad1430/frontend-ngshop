@@ -80,13 +80,9 @@
                         <div class="col-12">
                             <div class="d-md-flex align-items-center mt-3">
                                 <div class="ms-auto mt-3 mt-md-0">
-                                    <button *ngIf="!editMode" type="submit" class="btn btn-success font-medium px-4" (click)="onSubmit()"
+                                    <button type="submit" class="btn btn-success font-medium px-4" (click)="onSubmit()"
                                         [disabled]="isValid" id="submit-btn">
-                                        <i class="far fa-save me-2"></i> Save
-                                    </button>
-                                    <button *ngIf="editMode" type="submit" class="btn btn-success font-medium px-4" (click)="onSubmit()"
-                                        [disabled]="isValid" id="submit-btn">
-                                        <i class="far fa-save me-2"></i> Update
+                                        <i class="far fa-save me-2"></i> <span *ngIf="!editMode; else update">Save</span><ng-template #update>Update</ng-template>
                                     </button>
                                 </div>
                             </div>

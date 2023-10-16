@@ -1,4 +1,3 @@
-<p-toast></p-toast>
 <div class="card">
   <div class="card-body">
     <div class="container-fluid">
@@ -31,8 +30,8 @@
           <td><img *ngIf="cat.image; else elseImage" src="{{ cat.image }}" alt="{{ cat.name }} Image" height="50">
             <ng-template #elseImage>No Image inserted</ng-template>
           </td>
-          <td><i class="{{ cat.icon }}"></i></td>
-          <td><input class="form-control-color" type="color" name="color" value="{{ cat.color }}" disabled></td>
+          <td><i class="{{ cat.icon }} fs-4"></i></td>
+          <td [ngStyle]="{ color: cat.color }"><i class="fa-sharp fa-solid fa-circle fs-4"></i></td>
           <td class="text-center"><a (click)="editCategory(cat.id)" class="btn btn-sm btn-warning"
               pTooltip="Edit" tooltipPosition="top"><i class="far fa-edit"></i></a>
             &nbsp;<a (click)="deleteCategory(cat.id)" class="btn btn-sm btn-danger" pTooltip="Delete"
@@ -53,4 +52,3 @@
     </p-table>
   </div>
 </div>
-<p-confirmDialog></p-confirmDialog>

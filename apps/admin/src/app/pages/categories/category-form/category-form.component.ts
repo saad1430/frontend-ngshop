@@ -11,10 +11,11 @@ import { ToastService } from '../../../services/toast.service';
 })
 export class CategoryFormComponent implements OnInit {
   icons: Icons[] = [];
-  form: FormGroup;
+  form!: FormGroup;
   isSubmitted = false;
   isValid = false;
   editMode = false;
+  editingId!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -39,41 +40,36 @@ export class CategoryFormComponent implements OnInit {
     this.isSubmitted = true;
     if (this.form.valid) {
       this.isValid = true;
-      document.getElementById('submit-btn').innerHTML =
-        '<i class="fa-light fa-spinner fa-spin me-2"></i> Saving';
+      const element = document.getElementById('submit-btn');
+      if (element) {
+        element.innerHTML = `<i class="fa-light fa-spinner fa-spin me-2"></i>${
+          this.editMode ? 'Updating' : 'Saving'
+        }`;
+      }
       const cat: Category = {
         name: this.catForm.name.value,
         icon: this.catForm.icon.value,
         color: this.catForm.color.value,
         image: this.catForm.image.value,
       };
-      this.categoryService.createCategory(cat).subscribe({
-        next: () => {
-          this.toast.showSuccess('Category added successfully');
-          timer(2000)
-            .pipe(take(1))
-            .subscribe(() => {
-              this.router.navigateByUrl('/categories');
-            });
-        },
-        error: (error) => {
-          this.toast.showError("Category couldn't be added");
-          console.warn(error);
-        },
-      });
+      if (this.editMode) {
+        this._updateCategory(cat);
+      } else {
+        this._addCategory(cat);
+      }
     } else {
       this.toast.showError('Please fill all the required fields');
       return;
     }
   }
 
-  private _getIcons(){
+  private _getIcons() {
     this.categoryService.getIcons().subscribe((icon) => {
       this.icons = icon;
     });
   }
 
-  private _checkNoIcons(){
+  private _checkNoIcons() {
     if (this.icons.length < 1) {
       this.icons = [
         {
@@ -84,15 +80,24 @@ export class CategoryFormComponent implements OnInit {
     }
   }
 
-    private _checkEditMode(){
-    this.activeLink.params.subscribe(params => {
-      if(params.id){
-        this.editMode = true
+  private _checkEditMode() {
+    this.activeLink.params.subscribe((params) => {
+      if (params.id) {
+        this.editMode = true;
+        this.editingId = params.id;
+        this.categoryService.getCategory(params.id).subscribe((cat) => {
+          this.form.setValue({
+            name: cat.name,
+            icon: cat.icon,
+            color: cat.color,
+            image: cat.image,
+          });
+        });
       }
     });
-  };
+  }
 
-  private _formBuilder(){
+  private _formBuilder() {
     this.form = this.fb.group({
       name: [
         '',
@@ -108,4 +113,48 @@ export class CategoryFormComponent implements OnInit {
     });
   }
 
+  private _addCategory(cat: Category) {
+    this.categoryService.createCategory(cat).subscribe({
+      next: (category: Category) => {
+        this.toast.showSuccess(
+          `Category '${category.name}' added successfully`
+        );
+        timer(2000)
+          .pipe(take(1))
+          .subscribe(() => {
+            this.router.navigateByUrl('/categories');
+          });
+      },
+      error: (error) => {
+        this.toast.showError("Category couldn't be added");
+        console.warn(error);
+      },
+    });
+  }
+
+  private _updateCategory(cat: Category) {
+    if(cat.image){
+      if(this.catForm.image.untouched){
+        console.warn('Image untouched')
+        cat.image = null;
+      }
+    }
+    this.categoryService.updateCategory(cat, this.editingId).subscribe({
+      next: (category: Category) => {
+        this.toast.showSuccess(
+          `Category '${category.name}' updated successfully`
+        );
+        timer(2000)
+          .pipe(take(1))
+          .subscribe(() => {
+            this.router.navigateByUrl('/categories');
+          });
+      },
+      error: (error) => {
+        this.toast.showError("Category couldn't be updated");
+        this.toast.showError(error, 'Error:', true);
+        console.warn(error);
+      },
+    });
+  }
 }
