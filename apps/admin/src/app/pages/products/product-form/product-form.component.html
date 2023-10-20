@@ -1,126 +1,152 @@
-<div class="card">
+<div class="card" *ngIf="!loading;else loadingBlock">
   <div class="card-body">
     <div class="container-fluid">
       <div class="row mb-3">
         <h5>
-          <span *ngIf="editMode;else updateTitle">Update</span><ng-template #updateTitle>Add</ng-template>
-          Category
+          {{ editMode? 'Update' : 'Add' }} Product
         </h5>
-        <p class="col-11"><span *ngIf="editMode;else updateSubTitle">Update</span><ng-template #updateSubTitle>Add a
-            new</ng-template> category</p>
+        <p class="col-11">{{ editMode? 'Update this' : 'Add a new'}} Product</p>
         <a class="float-end btn btn-sm btn-outline-danger col-1 p-2" onclick="history.back()"><i
             class="far fa-arrow-left">&nbsp;</i>Back</a>
       </div>
     </div>
     <div class="card">
       <div class="card-header bg-danger">
-        <h4 class="mb-0 text-white">Enter Details of category</h4>
+        <h4 class="mb-0 text-white">Enter Details of product</h4>
       </div>
       <div class="card-body">
         <form [formGroup]="form">
           <div class="row">
-            <div class="col-md-6">
-              <div class="form-floating mb-3">
-                <input type="text"
-                  [ngClass]="{'is-invalid': fc.name.invalid && fc.name.dirty || fc.name.invalid && isSubmitted, 'is-valid': fc.name.valid && fc.name.dirty}"
-                  class="form-control" id="name" name="name" formControlName="name" placeholder="Enter Name here" />
-                <label for="name">Name <small class="text-danger">*</small></label>
-                <small class="invalid-feedback"
-                  *ngIf="fc.name.hasError('required') && fc.name.dirty || fc.name.hasError('required') && isSubmitted">Name
-                  is required</small>
-                <small class="invalid-feedback" *ngIf="fc.name.hasError('minlength') && fc.name.dirty">Minimum length is
-                  3
-                  characters.</small>
-                <small class="invalid-feedback" *ngIf="fc.name.hasError('maxlength') && fc.name.dirty">Maximum length is
-                  50 characters.</small>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating mb-3">
-                <input type="text"
-                  [ngClass]="{'is-invalid': fc.brand.invalid && fc.brand.dirty || fc.brand.invalid && isSubmitted, 'is-valid': fc.brand.valid && fc.brand.dirty}"
-                  class="form-control" id="brand" name="brand" formControlName="brand" placeholder="Enter brand here" />
-                <label for="brand">Brand <small class="text-danger">*</small></label>
-                <small class="invalid-feedback"
-                  *ngIf="fc.brand.hasError('required') && fc.brand.dirty || fc.brand.hasError('required') && isSubmitted">Brand
-                  is required</small>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating mb-3">
-                <select class="form-select" name="category" id="category" formControlName="category"
-                  [ngClass]="{'is-invalid': fc.category.invalid && fc.category.dirty || fc.category.invalid && isSubmitted, 'is-valid': fc.category.valid && fc.category.dirty}">
-                  <option hidden selected>-- Choose Category --</option>
-                  <option *ngFor="let cat of categories" value="{{cat.id}}">
-                    {{cat.name}}</option>
-                </select>
-                <label for="category">Category <small class="text-danger">*</small></label>
-                <small class="invalid-feedback"
-                  *ngIf="fc.category.invalid && fc.category.dirty || fc.category.invalid && isSubmitted">Category
-                  is required</small>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating mb-3">
-                <input type="checkbox"
-                  [ngClass]="{'is-invalid': fc.isFeaturedinvalid && fc.isFeatureddirty || fc.isFeaturedinvalid && isSubmitted, 'is-valid': fc.isFeaturedvalid && fc.isFeatureddirty}"
-                  class="form-control d-none" id="isFeatured" formControlName="isFeatured" />
-                  <button class="form-control btn btn-outline-{{ fc.isFeatured.value? 'success' : 'danger' }}" onclick="isFeatured.click()">{{ fc.isFeatured.value? "Yes" : "No" }}</button>
-                <label for="isFeatured">Featured <small class="text-danger"></small></label>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating mb-3">
-                <input type="number"
-                  [ngClass]="{'is-invalid': fc.price.invalid && fc.price.dirty || fc.price.invalid && isSubmitted, 'is-valid': fc.price.valid && fc.price.dirty}"
-                  class="form-control" id="price" name="price" formControlName="price" placeholder="Enter price here" />
-                <label for="price">Price <small class="text-danger">*</small></label>
-                <small class="invalid-feedback"
-                  *ngIf="fc.price.hasError('required') && fc.price.dirty || fc.price.hasError('required') && isSubmitted">Price
-                  is required</small>
-                <small class="invalid-feedback"
-                  *ngIf="fc.price.hasError('min') && fc.price.dirty || fc.price.hasError('min') && isSubmitted">Price
-                  can't be negative</small>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-floating mb-3">
-                <input type="number"
-                  [ngClass]="{'is-invalid': fc.countInStock.invalid && fc.countInStock.dirty || fc.countInStock.invalid && isSubmitted, 'is-valid': fc.countInStock.valid && fc.countInStock.dirty}"
-                  class="form-control" id="countInStock" name="countInStock" formControlName="countInStock"
-                  placeholder="Enter Stock here" [min]="0" />
-                <label for="countInStock">Stock <small class="text-danger">*</small></label>
-                <small class="invalid-feedback"
-                  *ngIf="fc.countInStock.hasError('required') && fc.countInStock.dirty || fc.countInStock.hasError('required') && isSubmitted">Stock
-                  Count
-                  is required</small>
-                <small class="invalid-feedback"
-                  *ngIf="fc.countInStock.hasError('min') && fc.countInStock.dirty || fc.countInStock.hasError('min') && isSubmitted">Stock
-                  Count
-                  can't be negative</small>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-floating mb-3">
-                <textarea type="text"
-                  [ngClass]="{'is-invalid': fc.description.invalid && fc.description.dirty || fc.description.invalid && isSubmitted, 'is-valid': fc.description.valid && fc.description.dirty}"
-                  class="form-control" id="description" name="description" formControlName="description" rows="5" cols="5"
-                  placeholder="Enter description here"></textarea>
-                <label for="description">Description <small class="text-danger">*</small></label>
-                <small class="invalid-feedback"
-                  *ngIf="fc.description.hasError('required') && fc.description.dirty || fc.description.hasError('required') && isSubmitted">Description
-                  is required</small>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="d-md-flex align-items-center mt-3">
-                <div class="ms-auto mt-3 mt-md-0">
-                  <button type="submit" class="btn btn-success font-medium px-4" (click)="onSubmit()"
-                    [disabled]="isValid" id="submit-btn">
-                    <i class="far fa-save me-2"></i> <span *ngIf="!editMode; else update">Save</span><ng-template
-                      #update>Update</ng-template>
-                  </button>
+            <div class="row col-10">
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="text"
+                    [ngClass]="{'is-invalid': fc.name.invalid && fc.name.dirty || fc.name.invalid && isSubmitted, 'is-valid': fc.name.valid && fc.name.dirty}"
+                    class="form-control" id="name" name="name" formControlName="name" placeholder="Enter Name here" />
+                  <label for="name">Name <small class="text-danger">*</small></label>
+                  <small class="invalid-feedback"
+                    *ngIf="fc.name.hasError('required') && fc.name.dirty || fc.name.hasError('required') && isSubmitted">Name
+                    is required</small>
+                  <small class="invalid-feedback" *ngIf="fc.name.hasError('minlength') && fc.name.dirty">Minimum length
+                    is
+                    3
+                    characters.</small>
+                  <small class="invalid-feedback" *ngIf="fc.name.hasError('maxlength') && fc.name.dirty">Maximum length
+                    is
+                    50 characters.</small>
                 </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="text"
+                    [ngClass]="{'is-invalid': fc.brand.invalid && fc.brand.dirty || fc.brand.invalid && isSubmitted, 'is-valid': fc.brand.valid && fc.brand.dirty}"
+                    class="form-control" id="brand" name="brand" formControlName="brand"
+                    placeholder="Enter brand here" />
+                  <label for="brand">Brand <small class="text-danger">*</small></label>
+                  <small class="invalid-feedback"
+                    *ngIf="fc.brand.hasError('required') && fc.brand.dirty || fc.brand.hasError('required') && isSubmitted">Brand
+                    is required</small>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <select class="form-select" name="category" id="category" formControlName="category"
+                    [ngClass]="{'is-invalid': fc.category.invalid && fc.category.dirty || fc.category.invalid && isSubmitted, 'is-valid': fc.category.valid && fc.category.dirty}">
+                    <option hidden selected>-- Choose Category --</option>
+                    <option *ngFor="let cat of categories" value="{{cat.id}}">
+                      {{cat.name}}</option>
+                  </select>
+                  <label for="category">Category <small class="text-danger">*</small></label>
+                  <small class="invalid-feedback"
+                    *ngIf="fc.category.invalid && fc.category.dirty || fc.category.invalid && isSubmitted">Category
+                    is required</small>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="checkbox"
+                    [ngClass]="{'is-invalid': fc.isFeaturedinvalid && fc.isFeatureddirty || fc.isFeaturedinvalid && isSubmitted, 'is-valid': fc.isFeaturedvalid && fc.isFeatureddirty}"
+                    class="form-control d-none" id="isFeatured" formControlName="isFeatured" />
+                  <button class="form-control btn btn-outline-{{ fc.isFeatured.value? 'success' : 'danger' }}"
+                    onclick="isFeatured.click()">{{ fc.isFeatured.value? "Yes" : "No" }}</button>
+                  <label for="isFeatured">Featured <small class="text-danger"></small></label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="number"
+                    [ngClass]="{'is-invalid': fc.price.invalid && fc.price.dirty || fc.price.invalid && isSubmitted, 'is-valid': fc.price.valid && fc.price.dirty}"
+                    class="form-control" id="price" name="price" formControlName="price"
+                    placeholder="Enter price here" />
+                  <label for="price">Price <small class="text-danger">*</small></label>
+                  <small class="invalid-feedback"
+                    *ngIf="fc.price.hasError('required') && fc.price.dirty || fc.price.hasError('required') && isSubmitted">Price
+                    is required</small>
+                  <small class="invalid-feedback"
+                    *ngIf="fc.price.hasError('min') && fc.price.dirty || fc.price.hasError('min') && isSubmitted">Price
+                    can't be negative</small>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="number"
+                    [ngClass]="{'is-invalid': fc.image.invalid && fc.image.dirty || fc.countInStock.invalid && isSubmitted, 'is-valid': fc.countInStock.valid && fc.countInStock.dirty}"
+                    class="form-control" id="countInStock" name="countInStock" formControlName="countInStock"
+                    placeholder="Enter Stock here" [min]="0" />
+                  <label for="countInStock">Stock <small class="text-danger">*</small></label>
+                  <small class="invalid-feedback"
+                    *ngIf="fc.countInStock.hasError('required') && fc.countInStock.dirty || fc.countInStock.hasError('required') && isSubmitted">Stock
+                    Count
+                    is required</small>
+                  <small class="invalid-feedback"
+                    *ngIf="fc.countInStock.hasError('min') && fc.countInStock.dirty || fc.countInStock.hasError('min') && isSubmitted">Stock
+                    Count
+                    can't be negative</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="col-md-12">
+                <div class="form-floating mb-3">
+                  <input type="file" class="form-control d-none" id="image"(change)="onImageChange($event)" accept="image/*"/>
+                  <div class="hover">
+                    <figure pTooltip="Select new image" tooltipPosition="left">
+                      <img  src="{{imageUrl?imageUrl:'assets/images/no_image.png'}}" alt="{{ fc.name.value }} image" class="rounded img-thumbnail hover" onclick="image.click()">
+                    </figure>
+                  </div>
+                  <small class="text-danger"
+                    *ngIf="fc.image.hasError('required') && fc.image.dirty || fc.image.hasError('required') && isSubmitted">Image is required</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-floating mb-3">
+              <textarea
+                [ngClass]="{'is-invalid': fc.description.invalid && fc.description.dirty || fc.description.invalid && isSubmitted, 'is-valid': fc.description.valid && fc.description.dirty}"
+                class="form-control" id="description" name="description" formControlName="description"
+                style="height: 120px;" placeholder="Enter description here"></textarea>
+              <label for="description">Short Description <small class="text-danger">*</small></label>
+              <small class="invalid-feedback"
+                *ngIf="fc.description.hasError('required') && fc.description.dirty || fc.description.hasError('required') && isSubmitted">Description
+                is required</small>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="mb-3">
+              <label for="richDescription" class="form-label">Rich Description <small
+                  class="text-danger"></small></label>
+              <quill-editor formControlName="richDescription" id="richDescription" class=""
+                style="height: 500px;width:100%"></quill-editor>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="d-md-flex align-items-center mt-3">
+              <div class="ms-auto mt-3 mt-md-0">
+                <button type="submit" class="btn btn-success font-medium px-4" (click)="onSubmit()" [disabled]="isValid"
+                  id="submit-btn">
+                  <i class="far fa-save me-2"></i> {{ editMode? 'Update' : 'Save'}}
+                </button>
               </div>
             </div>
           </div>
@@ -129,3 +155,9 @@
     </div>
   </div>
 </div>
+
+<ng-template #loadingBlock>
+  <div class="d-flex justify-content-center align-items-center" style="height: 80dvh;">
+    <h1><i class="fa-duotone fa-spinner fa-spin-pulse"></i> Loading something awesome</h1>
+  </div>
+</ng-template>

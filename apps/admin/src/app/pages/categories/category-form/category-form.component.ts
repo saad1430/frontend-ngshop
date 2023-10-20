@@ -135,12 +135,12 @@ export class CategoryFormComponent implements OnInit {
   }
 
   private _updateCategory(cat: Category) {
-    if(cat.image){
-      if(this.catForm.image.untouched){
-        console.warn('Image untouched')
-        cat.image = null;
-      }
-    }
+    // if(cat.image){
+    //   if(this.catForm.image.untouched){
+    //     console.warn('Image untouched')
+    //     cat.image = null;
+    //   }
+    // }
     this.categoryService.updateCategory(cat, this.editingId).subscribe({
       next: (category: Category) => {
         this.toast.showSuccess(

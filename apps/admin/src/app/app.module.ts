@@ -13,6 +13,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ImageModule } from 'primeng/image';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { DropdownModule } from 'primeng/dropdown';
+
+import { QuillModule } from 'ngx-quill';
 
 import { AppComponent } from './app.component';
 import { DashbaordComponent } from './pages/dashbaord/dashbaord.component';
@@ -31,6 +34,8 @@ const UX_MODULES = [
 	ImageModule,
 	ConfirmDialogModule,
 	InputNumberModule,
+	QuillModule,
+	DropdownModule,
 ];
 
 @NgModule({

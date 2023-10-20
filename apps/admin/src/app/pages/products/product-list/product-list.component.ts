@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, LazyLoadEvent } from 'primeng/api';
 import { ConnectionStringService, ToastService } from '@ecommerce/services';
 import { Product, ProductsService } from '@ecommerce/products';
 
@@ -8,25 +8,25 @@ import { Product, ProductsService } from '@ecommerce/products';
 	selector: 'admin-product-list',
 	templateUrl: './product-list.component.html',
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent  {
 	loading = true;
 	products: Product[] = [];
-	url= this.con.INIT_URL;
+	totalProducts: number;
+	url = this.con.INIT_URL;
+	currentEvent: LazyLoadEvent;
 
 	constructor(
 		private productService: ProductsService,
 		private toast: ToastService,
 		private confirmationService: ConfirmationService,
 		private router: Router,
-		private con: ConnectionStringService
+		private con: ConnectionStringService,
 	) {}
 
-	ngOnInit(): void {
-		this.getProducts();
-	}
 
-	private getProducts() {
-		this.productService.getProducts().subscribe((prod) => {			
+	private getAllProducts() {
+		this.loading = true;
+		this.productService.getProducts().subscribe((prod) => {
 			this.products = prod;
 			this.loading = false;
 			console.log(prod);
@@ -54,19 +54,41 @@ export class ProductListComponent implements OnInit {
 		this.productService.deleteProduct(id).subscribe({
 			next: () => {
 				this.toast.showSuccess('Product deleted successfully');
-				this.getProducts();
+				this.loadProducts(this.currentEvent);
 			},
 			error: (error) => {
 				this.toast.showError("Product couldn't be deleted");
 				console.warn(error);
-				this.getProducts();
+				this.loadProducts(this.currentEvent);
 			},
 		});
 	}
 
+	private _getProductCount() {
+		this.productService.getProductsCount().subscribe((count) => {
+			this.totalProducts = count;
+		});
+	}
+
 	editProduct(id: string) {
-		console.log(id);
 		this.router.navigateByUrl(`/products/edit/${id}`);
 	}
 
+	loadProducts(event: LazyLoadEvent) {
+		this.loading = true;
+		const first = event.first? event.first : 0;
+		const rows = event.rows ? event.rows : 999999999;
+		const sortField = event.sortField ? event.sortField : 'name';
+		const sortOrder = event.sortOrder ? event.sortOrder : 1;
+		this.currentEvent = event;
+		this._getProductCount();
+		setTimeout(() => {
+			return this.productService
+				.getProducts(first, rows, sortField, sortOrder)
+				.subscribe((prod) => {
+					this.products = prod;
+					this.loading = false;
+				});
+		}, 50);
+	}
 }

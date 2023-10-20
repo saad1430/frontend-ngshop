@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <div class="row mb-3">
                 <h5>
-                    Products ({{products.length}})
+                    Products ({{totalProducts}})
                 </h5>
                 <p class="col-11">List of all available Products</p>
                 <a class="float-end btn btn-sm btn-success col-1 p-2" routerLink="/products/new"><i
@@ -12,20 +12,23 @@
             </div>
         </div>
 
-        <p-table [value]="products" [tableStyle]="{'min-width': '60rem'}"
+        <p-table [value]="products" [tableStyle]="{'min-width': '60rem'}" [rows]="10" [totalRecords]="totalProducts"
+        [lazy]="true" (onLazyLoad)="loadProducts($event)" [paginator]="true" [loading]="loading"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="[5, 10, 25, 50, 100]" [showCurrentPageReport]="true"
             tableStyleClass="table table-striped table-bordered table-hover table-secondary shadow">
             <ng-template pTemplate="header">
                 <tr>
                     <th style="width: 3%;" class="text-center">S.N</th>
                     <th style="width:20%" pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
                     <th pSortableColumn="brand">Brand <p-sortIcon field="brand"></p-sortIcon></th>
-                    <th >Image </th>
+                    <th>Image </th>
                     <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
                     <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
                     <th pSortableColumn="countInStock">Stock <p-sortIcon field="countInStock"></p-sortIcon></th>
-                    <th >Featured</th>
+                    <th>Featured</th>
                     <th pSortableColumn="dateCreated">Date Created <p-sortIcon field="dateCreated"></p-sortIcon></th>
-                    <th >Time Created</th>
+                    <th>Time Created</th>
                     <th style="width:10%" class="text-center">Actions </th>
                 </tr>
             </ng-template>
@@ -34,8 +37,8 @@
                     <td class="text-center">{{ rowIndex+1 }}</td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.brand }}</td>
-                    <td><p-image *ngIf="item.image; else elseImage" src="{{ url }}{{ item.image }}" alt="{{ item.name }} Image" width="60"
-                            [preview]="true"></p-image>
+                    <td><p-image *ngIf="item.image; else elseImage" src="{{ url }}{{ item.image }}"
+                            alt="{{ item.name }} Image" height="50" [preview]="true"></p-image>
                         <ng-template #elseImage>No Image inserted</ng-template>
                     </td>
                     <td>{{ item.category.name }}</td>
@@ -45,9 +48,10 @@
                     <td>{{ item.dateCreated | date:'dd-MMM-yy' }}</td>
                     <td>{{ item.dateCreated | date:'hh:mm:ss a' }}</td>
                     <td class="text-center"><a (click)="editProduct(item.id)" class="btn btn-sm btn-warning"
-                            pTooltip="Edit" tooltipPosition="top"><i class="far fa-edit"></i></a>
-                        &nbsp;<a (click)="deleteProduct(item.id)" class="btn btn-sm btn-danger" pTooltip="Delete"
-                            tooltipPosition="top"><i class="far fa-trash"></i></a></td>
+                            pTooltip="Edit {{ item.name }}" tooltipPosition="top"><i class="far fa-edit"></i></a>
+                        &nbsp;<a (click)="deleteProduct(item.id)" class="btn btn-sm btn-danger"
+                            pTooltip="Delete {{ item.name }}" tooltipPosition="top"><i class="far fa-trash"></i></a>
+                    </td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">

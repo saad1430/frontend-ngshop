@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CategoriesService, Category, Product, ProductsService } from '@ecommerce/products';
-import { ToastService } from '@ecommerce/services';
+import {
+	CategoriesService,
+	Category,
+	Product,
+	ProductsService,
+} from '@ecommerce/products';
+import { ConnectionStringService, ToastService } from '@ecommerce/services';
 
 @Component({
 	selector: 'admin-product-form',
@@ -10,12 +15,16 @@ import { ToastService } from '@ecommerce/services';
 })
 export class ProductFormComponent implements OnInit {
 	loading = false;
+	product!: Product;
 	form!: FormGroup;
 	isSubmitted = false;
 	isValid = false;
 	editMode = false;
 	editingId!: string;
-  categories: Category[];
+	categories?: Category[];
+	cat!: Category;
+	url = this.con.INIT_URL;
+	imageUrl: string;
 
 	constructor(
 		private fb: FormBuilder,
@@ -23,7 +32,8 @@ export class ProductFormComponent implements OnInit {
 		private toast: ToastService,
 		private router: Router,
 		private activeLink: ActivatedRoute,
-    private categoryService: CategoriesService
+		private categoryService: CategoriesService,
+		private con: ConnectionStringService,
 	) {}
 
 	ngOnInit() {
@@ -38,7 +48,7 @@ export class ProductFormComponent implements OnInit {
 		this.loading = true;
 		this._formBuilder();
 		this._checkEditMode();
-    this._getCategories();
+		this._getCategories();
 		this.loading = false;
 	}
 
@@ -56,18 +66,15 @@ export class ProductFormComponent implements OnInit {
 				'',
 				Validators.compose([Validators.required, Validators.minLength(30)]),
 			],
-			richDescription: [
-				'',
-				Validators.compose([Validators.required, Validators.minLength(100)]),
-			],
+			richDescription: [''],
 			image: ['', Validators.required],
 			images: [''],
 			brand: ['', Validators.required],
-			price: ['', Validators.compose([Validators.required, Validators.min(1)])],
+			price: [0, Validators.compose([Validators.required, Validators.min(0)])],
 			category: ['', Validators.required],
 			countInStock: [
-				'',
-				Validators.compose([Validators.required, Validators.min(1)]),
+				0,
+				Validators.compose([Validators.required, Validators.min(0)]),
 			],
 			isFeatured: [false],
 		});
@@ -78,19 +85,28 @@ export class ProductFormComponent implements OnInit {
 			if (params.id) {
 				this.editMode = true;
 				this.editingId = params.id;
-				this.productService.getProduct(params.id).subscribe((prod) => {
-					this.form.setValue({
-						name: prod.name,
-						description: prod.description,
-						richDescription: prod.richDescription,
-						image: prod.image,
-						images: prod.images,
-						brand: prod.brand,
-						price: prod.price,
-						category: prod.category,
-						countInStock: prod.countInStock,
-						isFeatured: prod.isFeatured,
-					});
+				this.productService.getProduct(params.id).subscribe((res) => {
+					this.product = res.product;
+					if (res.success) {
+						if (this.product.category) {
+							this.cat = this.product.category;
+						}
+						if (this.product.image) {
+							this.imageUrl = this.url + this.product.image;
+						}
+						this.form.setValue({
+							name: this.product.name,
+							description: this.product.description,
+							richDescription: this.product.richDescription,
+							image: this.product.image,
+							images: this.product.images,
+							brand: this.product.brand,
+							price: this.product.price,
+							category: this.cat.id,
+							countInStock: this.product.countInStock,
+							isFeatured: this.product.isFeatured,
+						});
+					}
 				});
 			}
 		});
@@ -106,18 +122,10 @@ export class ProductFormComponent implements OnInit {
 					this.editMode ? 'Updating' : 'Saving'
 				}`;
 			}
-			const prod: Product = {
-				name: this.fc.name.value,
-				description: this.fc.description.value,
-				richDescription: this.fc.richDescription.value,
-				image: this.fc.image.value,
-				images: this.fc.images.value,
-				brand: this.fc.brand.value,
-				price: this.fc.price.value,
-				category: this.fc.category.value,
-				countInStock: this.fc.countInStock.value,
-				isFeatured: this.fc.isFeatured.value,
-			};
+			const prod = new FormData();
+			Object.keys(this.fc).map((key) => {
+				prod.append(key, this.fc[key].value);
+			});
 			if (this.editMode) {
 				this._update(prod);
 			} else {
@@ -129,46 +137,69 @@ export class ProductFormComponent implements OnInit {
 		}
 	}
 
-	private _add(prod: Product) {
+	private _add(prod: FormData) {
 		this.productService.createProduct(prod).subscribe({
-			next: (Product: Product) => {
-				this.toast.showSuccess(`Product '${Product.name}' added successfully`);
+			next: () => {
+				this.toast.showSuccess(
+					`Product added successfully`,
+				);
 				this.router.navigateByUrl('/products');
 			},
 			error: (error) => {
 				this.toast.showError("Product couldn't be added");
 				this.toast.showError(error, 'Error:', true);
+				this._cantSend();
 				console.warn(error);
 			},
 		});
 	}
 
-	private _update(prod: Product) {
-		if (prod.image) {
-			if (this.fc.image.untouched) {
-				console.warn('Image untouched');
-				prod.image = null;
-			}
-		}
+	private _update(prod: FormData) {
 		this.productService.updateProduct(prod, this.editingId).subscribe({
-			next: (Product: Product) => {
+			next: () => {
 				this.toast.showSuccess(
-					`Product '${Product.name}' updated successfully`,
+					`Product  updated successfully`,
 				);
 				this.router.navigateByUrl('/products');
 			},
 			error: (error) => {
 				this.toast.showError("Product couldn't be updated");
 				this.toast.showError(error, 'Error:', true);
+				this._cantSend();
 				console.warn(error);
 			},
 		});
 	}
 
-  private _getCategories(){
-    this.categoryService.getCategories().subscribe(cat => {
-      this.categories = cat;
-    })
-  }
+	private _getCategories() {
+		this.categoryService.getCategories().subscribe((cat) => {
+			this.categories = cat;
+		});
+	}
 
+	private _cantSend(){
+		this.isValid = false;
+		const element = document.getElementById('submit-btn');
+		if (element) {
+			element.innerHTML = `<i class="far fa-save me-2"></i>${
+				this.editMode ? 'Update' : 'Save'
+			}`;
+		}
+	}
+
+	onImageChange(event: Event): void {
+		const inputElement = event.target as HTMLInputElement;
+		const file = inputElement.files?.[0];
+
+		if (file) {
+			this.form.patchValue({ image: file });
+			this.form.get('image').updateValueAndValidity();
+			// Display the selected image in the preview.
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				this.imageUrl = e.target.result as string;
+			};
+			reader.readAsDataURL(file);
+		}
+	}
 }

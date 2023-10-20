@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConnectionStringService } from '@ecommerce/services';
@@ -8,30 +9,36 @@ import { Product } from '../models/product';
 	providedIn: 'root',
 })
 export class ProductsService {
-	URL = this.con.API_URL;
+	URL = `${this.con.API_URL}product`;
 
 	constructor(private http: HttpClient, private con: ConnectionStringService) {}
 
-	getProducts(): Observable<Product[]> {
-		return this.http.get<Product[]>(`${this.URL}product`);
+	getProducts(
+		first?: number,
+		rows?: number,
+		sortField?: string,
+		sortOrder?: number,
+	): Observable<Product[]> {
+		return this.http.get<Product[]>(`${this.URL}?first=${first||0}&rows=${rows||10}&sortField=${sortField||'name'}&sortOrder=${sortOrder||1}`);
 	}
 
-	getProduct(ProductId: string): Observable<Product> {
-		return this.http.get<Product>(`${this.URL}product/one/${ProductId}`);
+	getProductsCount(): Observable<number> {
+		return this.http.get<number>(`${this.URL}/count`);
 	}
 
-	createProduct(Product: Product): Observable<Product> {
-		return this.http.post<Product>(`${this.URL}product/create`, Product);
+	getProduct(ProductId: string): Observable<any> {
+		return this.http.get<any>(`${this.URL}/one/${ProductId}`);
 	}
 
-	updateProduct(Product: Product, ProductId: string): Observable<Product> {
-		return this.http.put<Product>(
-			`${this.URL}product/update/${ProductId}`,
-			Product,
-		);
+	createProduct(Product: FormData): Observable<any> {
+		return this.http.post<any>(`${this.URL}/create`, Product);
+	}
+
+	updateProduct(Product: FormData, ProductId: string): Observable<any> {
+		return this.http.put<any>(`${this.URL}/update/${ProductId}`, Product);
 	}
 
 	deleteProduct(ProductId: string): Observable<object> {
-		return this.http.delete<object>(`${this.URL}product/delete/${ProductId}`);
+		return this.http.delete<object>(`${this.URL}/delete/${ProductId}`);
 	}
 }

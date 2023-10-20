@@ -4,22 +4,59 @@
 // Font Awesome Icons
 @import './icons/css/all.min.css';
 // Custom CSS
-.admin-{
-    &footer{
-        min-height: 2rem;
-        max-height: 2rem;
-        min-width: 100%;
-        max-width: 100%;
-        bottom: 0;
-        text-align: center;
-        padding-top: 2px;
-    }
+.admin- {
+	&footer {
+		min-height: 2rem;
+		max-height: 2rem;
+		min-width: 100%;
+		max-width: 100%;
+		bottom: 0;
+		text-align: center;
+		padding-top: 2px;
+	}
 }
-.active{
-    color: var(--bs-danger) !important;
+.active {
+	color: var(--bs-danger) !important;
 }
-input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+/* For making something unselectable */
+.no-sel {
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	-ms-touch-select: none;
+}
+/* Edit Profile Image Selection */
+.hover {
+	cursor: pointer;
+	max-height: 205px;
+}
+@media (max-width: 400px) {
+	.hover figure img {
+		width: 60px;
+		-webkit-transition: 0.3s ease-in-out;
+		transition: 0.3s ease-in-out;
+	}
+}
+@media (min-width: 401px) and (max-width: 768px) {
+	.hover figure img {
+		width: 80px;
+		-webkit-transition: 0.3s ease-in-out;
+		transition: 0.3s ease-in-out;
+	}
+}
+.hover figure img {
+	-webkit-filter: grayscale(0);
+	filter: grayscale(0);
+	-webkit-transition: 0.3s ease-in-out;
+	transition: 0.3s ease-in-out;
+}
+.hover figure:hover img {
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+}
