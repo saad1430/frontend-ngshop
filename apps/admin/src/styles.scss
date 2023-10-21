@@ -15,9 +15,6 @@
 		padding-top: 2px;
 	}
 }
-.active {
-	color: var(--bs-danger) !important;
-}
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
 	-webkit-appearance: none;
@@ -59,4 +56,34 @@ input[type='number']::-webkit-outer-spin-button {
 .hover figure:hover img {
 	-webkit-filter: grayscale(100%);
 	filter: grayscale(100%);
+}
+/* CHANGING PAGINATION COLOR SCHEME FOR BOOTSTRAP 5 */
+.pagination > li > a {
+	background-color: white !important;
+	color: var(--bs-danger) !important;
+	user-select: none;
+}
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover {
+	color: #ff0000 !important;
+	background-color: #eee !important;
+	border-color: #ddd !important;
+	transition: 300ms;
+}
+.pagination > .disabled > .page-link {
+	color: white !important;
+	background-color: rgba(56, 4, 4, 0.808) !important;
+	border: dotted 1px rgba(56, 4, 4, 0.808) !important;
+
+}
+.pagination > .active > .page-link {
+	color: white !important;
+	background-color: var(--bs-danger) !important;
+	border: solid 1px var(--bs-danger) !important;
+}
+.pagination > .active > .page-link:hover {
+	background-color: var(--bs-danger) !important;
+	border: solid 1px var(--bs-danger) !important;
 }

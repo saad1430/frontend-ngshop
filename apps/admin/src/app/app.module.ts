@@ -26,6 +26,7 @@ import { CategoryListComponent } from './pages/categories/category-list/category
 import { CategoryFormComponent } from './pages/categories/category-form/category-form.component';
 import { ProductFormComponent } from './pages/products/product-form/product-form.component';
 import { ProductListComponent } from './pages/products/product-list/product-list.component';
+import { PaginatorComponent } from './shared/paginator/paginator.component';
 
 const UX_MODULES = [
 	TableModule,
@@ -49,6 +50,7 @@ const UX_MODULES = [
 		CategoryFormComponent,
 		ProductFormComponent,
 		ProductListComponent,
+		PaginatorComponent,
 	],
 	imports: [
 		BrowserModule,
