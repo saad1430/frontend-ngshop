@@ -3,7 +3,8 @@
         <div class="container-fluid">
             <div class="row mb-3">
                 <h5>
-                    Products <small class="fs-6 text-small">(Showing {{firstItem}} to {{lastItem}} of {{totalProducts}})</small>
+                    Products <small class="fs-6 text-small">(Showing {{firstItem}} to {{lastItem}} of
+                        {{totalProducts}})</small>
                 </h5>
                 <p class="col-11">List of all available Products</p>
                 <a class="float-end btn btn-sm btn-success col-1 p-2" routerLink="/products/new"><i
@@ -12,7 +13,7 @@
             </div>
         </div>
 
-        <p-table [value]="products" [tableStyle]="{'min-width': '60rem'}" [rows]="10" [totalRecords]="totalProducts"
+        <p-table [value]="products" [tableStyle]="{'min-width': '60rem'}" [rows]="rows" [totalRecords]="totalProducts"
             [lazy]="true" (onLazyLoad)="loadProducts($event)" [loading]="loading"
             tableStyleClass="table table-striped table-bordered table-hover table-secondary shadow">
             <ng-template pTemplate="header">
@@ -47,9 +48,10 @@
                     <td>{{ item.dateCreated | date:'dd-MMM-yy' }}</td>
                     <td>{{ item.dateCreated | date:'hh:mm:ss a' }}</td>
                     <td class="text-center"><a (click)="editProduct(item.id)" class="btn btn-sm btn-warning"
-                            pTooltip="Edit {{ item.name }}" tooltipPosition="top"><i class="far fa-edit"></i></a>
+                            pTooltip="Edit {{ item.name }}" tooltipPosition="top"><i class="fa-duotone fa-edit"></i></a>
                         &nbsp;<a (click)="deleteProduct(item.id)" class="btn btn-sm btn-danger"
-                            pTooltip="Delete {{ item.name }}" tooltipPosition="top"><i class="far fa-trash"></i></a>
+                            pTooltip="Delete {{ item.name }}" tooltipPosition="top"><i
+                                class="fa-duotone fa-trash"></i></a>
                     </td>
                 </tr>
             </ng-template>
@@ -57,7 +59,7 @@
                 <tr>
                     <td colspan="11" class="text-center">
                         <div class="no-data-message">
-                            <h5><i class="fa fa-info-circle"></i>
+                            <h5><i class="fa-duotone fa-info-circle"></i>
                                 <b class="text-danger"> No data found. Please try again later.</b>
                             </h5>
                         </div>
@@ -65,48 +67,8 @@
                 </tr>
             </ng-template>
         </p-table>
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item {{isFirstPage()? 'disabled':''}}">
-                            <a class="page-link" (click)="first()" aria-label="Previous">
-                                <i class="fa-duotone fa-chevrons-left"></i>
-                            </a>
-                        </li>
-                        <li class="page-item {{isFirstPage()? 'disabled':''}}">
-                            <a class="page-link" (click)="prev()" aria-label="Previous">
-                                <i class="fa-solid fa-angle-left"></i>
-                            </a>
-                        </li>
-                        <li class="page-item {{page === currentPage? 'active disabled':''}}" *ngFor="let page of pages">
-                            <a class="page-link" (click)="goToPage(page)">
-                                {{ page }}
-                            </a>
-                        </li>
-                        <li class="page-item {{isLastPage()? 'disabled':''}}">
-                            <a class="page-link" (click)="next()" aria-label="Next">
-                                <i class="fa-solid fa-angle-right"></i>
-                            </a>
-                        </li>
-                        <li class="page-item {{isLastPage()? 'disabled':''}}">
-                            <a class="page-link" (click)="last()" aria-label="Next">
-                                <i class="fa-duotone fa-chevrons-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="col-2">
-                <select (change)="rowUpdate()" [(ngModel)]="rows" class="form-select">
-                    <option value='5'>5</option>
-                    <option value='10'>10</option>
-                    <option value='25'>25</option>
-                    <option value='50'>50</option>
-                    <option value='100'>100</option>
-                </select>
-            </div>
-        </div>
+        <admin-paginator *ngIf="dataIsLoaded" [totalItems]="totalProducts" [currentEvent]="currentEvent"
+            (pageChange)="loadProducts($event)" (ourFirstItem)="ourFirstItem($event)"
+            (ourLastItem)="ourLastItem($event)"></admin-paginator>
     </div>
 </div>
