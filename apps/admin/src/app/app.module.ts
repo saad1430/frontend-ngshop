@@ -29,6 +29,8 @@ import { ProductListComponent } from './pages/products/product-list/product-list
 import { PaginatorComponent } from './shared/paginator/paginator.component';
 import { UserListComponent } from './pages/users/user-list/user-list.component';
 import { UserFormComponent } from './pages/users/user-form/user-form.component';
+import { OrderListComponent } from './pages/orders/order-list/order-list.component';
+import { OrderDetailComponent } from './pages/orders/order-detail/order-detail.component';
 
 const UX_MODULES = [
 	TableModule,
@@ -55,6 +57,8 @@ const UX_MODULES = [
 		PaginatorComponent,
 		UserListComponent,
 		UserFormComponent,
+		OrderListComponent,
+		OrderDetailComponent,
 	],
 	imports: [
 		BrowserModule,

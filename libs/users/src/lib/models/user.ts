@@ -3,6 +3,8 @@ export class User {
 	name?: string;
 	email?: string;
 	passwordHash?: string;
+	password?: string;
+	confirmPassword?: string;
 	phone?: string;
 	isAdmin?: boolean;
 	street?: string;

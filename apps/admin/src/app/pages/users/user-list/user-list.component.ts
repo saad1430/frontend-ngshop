@@ -80,7 +80,7 @@ export class UserListComponent {
 		this.userService.toggleUserAdmin(id, id).subscribe({
 			next: (res) => {
 				this.toast.showSuccess(
-					`${res.name} is now a(n) ${res.isAdmin ? 'User' : 'Admin'}`,
+					`${res.name} is now a(n) ${res.isAdmin ? 'Admin' : 'User'}`,
 				);
 				this.loadUsers(this.currentEvent);
 			},

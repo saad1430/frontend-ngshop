@@ -1,1 +1,196 @@
-<p>user-form works!</p>
+<div class="card" *ngIf="!loading;else loadingBlock">
+  <div class="card-body">
+    <div class="container-fluid">
+      <div class="row mb-3">
+        <h5>{{ editMode? 'Update' : 'Add' }} {{formName}}</h5>
+        <p class="col-11">{{ editMode? 'Update this' : 'Add a new'}} {{formName}}</p>
+        <a class="float-end btn btn-sm btn-outline-danger col-1 p-2" onclick="history.back()"><i
+            class="far fa-arrow-left">&nbsp;</i>Back</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header bg-danger">
+        <h4 class="mb-0 text-white">Enter Details of {{formName}}</h4>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="form">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <input type="text"
+                  [ngClass]="{'is-invalid': fc.name.invalid && (fc.name.dirty || isSubmitted), 'is-valid': fc.name.valid && fc.name.dirty}"
+                  class="form-control" placeholder="" id="name" formControlName="name" />
+                <label for="name">Name <small class="text-danger">*</small></label>
+                <small class="invalid-feedback">
+                  <span *ngIf="fc.name.hasError('required') && (fc.name.dirty || isSubmitted)">Name is required.</span>
+                  <span *ngIf="fc.name.hasError('minlength') && (fc.name.dirty || isSubmitted)">Minimum length is 3
+                    characters.</span>
+                  <span *ngIf="fc.name.hasError('maxlength') && (fc.name.dirty || isSubmitted)">Maximum length is 100
+                    characters.</span>
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <input type="email" placeholder="" class="form-control" id="email" formControlName="email"
+                  [ngClass]="{'is-invalid': fc.email.invalid && (fc.email.dirty || isSubmitted), 'is-valid': fc.email.valid && fc.email.dirty}" />
+                <label for="email">Email <small class="text-danger">*</small></label>
+                <small class="invalid-feedback">
+                  <span *ngIf="fc.email.hasError('required') && (fc.email.dirty || isSubmitted)">Email is
+                    required.</span>
+                  <span *ngIf="fc.email.hasError('email') && (fc.email.dirty ||isSubmitted)">Email must be an email.
+                    (abc@gmail.com)</span>
+                  <span *ngIf="fc.email.hasError('maxlength') && (fc.email.dirty || isSubmitted)">Maximum length is 255
+                    characters.</span>
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="password" formControlName="password" placeholder="" (keyup)="checkPassword()"
+                  [ngClass]="{'is-invalid': fc.password.invalid && (fc.password.dirty || isSubmitted), 'is-valid': fc.password.valid && fc.password.dirty}" />
+                <label for="password">Password <small class="text-danger">{{editMode? '':'*'}}</small></label>
+                <small class="invalid-feedback">
+                  <span *ngIf="fc.password.hasError('required') && (fc.password.dirty || isSubmitted)">Password is
+                    required.</span>
+                  <span *ngIf="fc.password.hasError('minlength') && (fc.password.dirty || isSubmitted)">Minimum length
+                    is 8 characters.</span>
+                  <span *ngIf="fc.password.hasError('maxlength') && (fc.password.dirty || isSubmitted)">Maximum length
+                    is 32 characters.</span>
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword"
+                  placeholder="" (keyup)="checkPassword()"
+                  [ngClass]="{'is-invalid': (fc.confirmPassword.invalid || !passwordValidated) && (fc.confirmPassword.dirty || isSubmitted), 'is-valid': fc.confirmPassword.valid && fc.confirmPassword.dirty}" />
+                <label for="confirmPassword">Confirm Password <small class="text-danger">{{editMode? '':'*'}}</small></label>
+                <small class="invalid-feedback">
+                  <span *ngIf="!passwordValidated && (fc.password.valid && fc.confirmPassword.valid)">Password and confirm
+                    password doesn't match. </span>
+                  <span
+                    *ngIf="fc.confirmPassword.hasError('required') && (fc.confirmPassword.dirty || isSubmitted)">Confirm
+                    Password is required.</span>
+                  <span
+                    *ngIf="fc.confirmPassword.hasError('minlength') && (fc.confirmPassword.dirty || isSubmitted)">Minimum
+                    length is 8 characters.</span>
+                  <span
+                    *ngIf="fc.confirmPassword.hasError('maxlength') && (fc.confirmPassword.dirty || isSubmitted)">Maximum
+                    length is 32 characters.</span>
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <input type="number" class="form-control" id="phone" formControlName="phone" placeholder=""
+                  [ngClass]="{'is-invalid': fc.phone.invalid && (fc.phone.dirty || isSubmitted), 'is-valid': fc.phone.valid && fc.phone.dirty}" />
+                <label for="phone">Phone <small class="text-danger">*</small></label>
+                <small class="invalid-feedback">
+                  <span *ngIf="fc.phone.hasError('required') && (fc.phone.dirty || isSubmitted)">Phone Number is
+                    required.</span>
+                  <span *ngIf="fc.phone.hasError('min') && (fc.phone.dirty || isSubmitted)">Minimum
+                    length is 10 characters.</span>
+                  <span *ngIf="fc.phone.hasError('max') && (fc.phone.dirty || isSubmitted)">Maximum
+                    length is 12 characters.</span>
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <select formControlName="country" id="country" class="form-select" placeholder=""
+                  (change)="onCountrySelect()"
+                  [ngClass]="{'is-invalid': fc.country.invalid && (fc.country.dirty || isSubmitted), 'is-valid': fc.country.valid && fc.country.dirty}">
+                  <option hidden value="">--Select a Country--</option>
+                  <option *ngFor="let country of countries" value="{{country.name}}">{{country.name}}</option>
+                </select>
+                <label for="country">Country <small class="text-danger">*</small></label>
+                <small class="invalid-feedback">
+                  <span *ngIf="fc.country.hasError('required') && (fc.country.dirty || isSubmitted)">Country is
+                    required.</span>
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="cities.length>0;else noCities">
+              <div class="form-floating mb-3">
+                <select formControlName="city" id="city" class="form-select" placeholder=""
+                  [ngClass]="{'is-invalid': fc.city.invalid && (fc.city.dirty || isSubmitted), 'is-valid': fc.city.valid && fc.city.dirty}">
+                  <option hidden value="">--Select a City--</option>
+                  <option *ngFor="let city of cities" value="{{city}}">{{city}}</option>
+                </select>
+                <label for="city">City <small class="text-danger">*</small></label>
+                <small class="invalid-feedback">
+                  <span *ngIf="fc.city.hasError('required') && (fc.city.dirty || isSubmitted)">City is
+                    required.</span>
+                </small>
+              </div>
+            </div>
+            <ng-template #noCities>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="text"
+                    [ngClass]="{'is-invalid': fc.city.invalid && (fc.city.dirty || isSubmitted), 'is-valid': fc.city.valid && fc.city.dirty}"
+                    class="form-control" placeholder="" id="city" formControlName="city" />
+                  <label for="city">City <small class="text-danger">*</small></label>
+                  <small class="invalid-feedback">
+                    <span *ngIf="fc.city.hasError('required') && (fc.city.dirty || isSubmitted)">City is
+                      required.</span>
+                  </small>
+                </div>
+              </div>
+            </ng-template>
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" placeholder="" id="street" formControlName="street" />
+                <label for="street">Street <small class="text-danger"></small></label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" placeholder="" id="apartment" formControlName="apartment" />
+                <label for="apartment">Apartment <small class="text-danger"></small></label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <input type="number" maxlength="5" min="0" minlength="5"
+                  [ngClass]="{'is-invalid': fc.zip.invalid && (fc.zip.dirty || isSubmitted), 'is-valid': fc.zip.valid && fc.zip.dirty}"
+                  class="form-control" placeholder="" id="zip" formControlName="zip" />
+                <label for="zip">Zip Code <small class="text-danger"></small></label>
+                <small class="invalid-feedback">
+                  <span *ngIf="fc.zip.invalid && (fc.zip.dirty || isSubmitted)">Zip code must be of 5 numbers and cant
+                    be a negative number</span>
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check form-switch mb-3 fs-4">
+                <input type="checkbox" class="form-check-input" placeholder="" id="isAdmin" formControlName="isAdmin" />
+                <label class="form-check-label" [ngClass]="fc.isAdmin.value? 'text-danger':'text-success'"
+                  for="isAdmin">Create as {{fc.isAdmin.value? 'Admin':'User'}}</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-md-flex align-items-center mt-3">
+                <div class="ms-auto mt-3 mt-md-0">
+                  <button type="submit" class="btn btn-success font-medium px-4" (click)="onSubmit()"
+                    [disabled]="isValid || !form.valid" id="submit-btn">
+                    <i class="far fa-save me-2"></i>{{editMode? 'Update':'Save'}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #loadingBlock>
+  <div class="d-flex justify-content-center align-items-center" style="height: 80dvh;">
+    <h1><i class="fa-duotone fa-spinner fa-spin-pulse"></i> Loading something awesome</h1>
+  </div>
+</ng-template>

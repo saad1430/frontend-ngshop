@@ -34,11 +34,15 @@ export class UsersService {
 		return this.http.get<any>(`${this.URL}/one/${UserId}`);
 	}
 
-	createUser(User: FormData): Observable<any> {
+	createUser(User: User): Observable<any> {
 		return this.http.post<any>(`${this.URL}/create`, User);
 	}
 
-	updateUser(User: FormData, UserId: string): Observable<any> {
+	registerUser(User: User): Observable<any> {
+		return this.http.post<any>(`${this.URL}/register`, User);
+	}
+
+	updateUser(User: User, UserId: string): Observable<any> {
 		return this.http.put<any>(`${this.URL}/update/${UserId}`, User);
 	}
 
