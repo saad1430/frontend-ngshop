@@ -5,6 +5,9 @@
 @import './icons/css/all.min.css';
 // Custom CSS
 .admin- {
+	&body {
+		min-height: 83dvh;
+	}
 	&footer {
 		min-height: 2rem;
 		max-height: 2rem;
@@ -13,12 +16,27 @@
 		bottom: 0;
 		text-align: center;
 		padding-top: 2px;
+		background: hsla(0, 0%, 100%, 0.1);
+		backdrop-filter: blur(30px);
 	}
 }
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
+}
+.link {
+	cursor: pointer;
+	text-decoration: none;
+	color: var(--bs-danger) !important;
+}
+.link:hover {
+	cursor: pointer;
+	color: #ff0000 !important;
+	background-color: var(--bs-secondary);
+	border-radius: 10%;
+	font-size: large;
+	transition: 400ms;
 }
 /* For making something unselectable */
 .no-sel {
@@ -76,7 +94,6 @@ input[type='number']::-webkit-outer-spin-button {
 	color: white !important;
 	background-color: rgba(56, 4, 4, 0.808) !important;
 	border: dotted 1px rgba(56, 4, 4, 0.808) !important;
-
 }
 .pagination > .active > .page-link {
 	color: white !important;

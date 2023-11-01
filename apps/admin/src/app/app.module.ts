@@ -31,6 +31,7 @@ import { UserListComponent } from './pages/users/user-list/user-list.component';
 import { UserFormComponent } from './pages/users/user-form/user-form.component';
 import { OrderListComponent } from './pages/orders/order-list/order-list.component';
 import { OrderDetailComponent } from './pages/orders/order-detail/order-detail.component';
+import { UsersModule } from '@ecommerce/users';
 
 const UX_MODULES = [
 	TableModule,
@@ -66,6 +67,7 @@ const UX_MODULES = [
 		FormsModule,
 		ReactiveFormsModule,
 		RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
+		UsersModule,
 		HttpClientModule,
 		UX_MODULES,
 	],

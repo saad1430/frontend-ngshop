@@ -1,0 +1,179 @@
+<section class="text-center" *ngIf="!loading;else loadingBlock">
+    <!-- Background image -->
+    <div class="p-5 bg-image" style="
+        background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
+        height: 300px;
+        "></div>
+    <!-- Background image -->
+    <div class="container" id="login" *ngIf="!register">
+        <div class="card mx-4 mx-md-5 shadow-5-strong fade-in" style="
+            margin-top: -100px;
+            background: hsla(0, 0%, 100%, 0.5);
+            backdrop-filter: blur(30px);
+            ">
+            <div class="card-body py-5 px-md-5">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-6">
+                        <h1 class="fw-bold mb-2">Welcome to <b>NG Shop</b></h1>
+                        <h2 class="fw-bold mb-5"><i class="fa-duotone fa-user-lock"></i> Login</h2>
+                        <form (submit)="login()" [formGroup]="form">
+                            <!-- Email input -->
+                            <div class="form-floating mb-4">
+                                <input type="email" id="email" class="form-control" formControlName="email" autofocus placeholder=""
+                                [ngClass]="{'is-invalid': fc['email'].invalid && (fc['email'].dirty || isSubmitted), 'is-valid': fc['email'].valid && fc['email'].dirty}"
+                                autocomplete="email" />
+                                <label class="form-label" for="email"><i class="fa-duotone fa-envelope"></i> Email address</label>
+                                <small class="text-danger">
+                                    <span
+                                        *ngIf="fc['email'].hasError('required') && (fc['email'].dirty || isSubmitted)">Email
+                                        is
+                                        required.</span>
+                                    <span
+                                        *ngIf="fc['email'].hasError('email') && (fc['email'].dirty ||isSubmitted)">Invalid
+                                        email format.
+                                        (abc@gmail.com)</span>
+                                </small>
+                            </div>
+                            <!-- Password input -->
+                            <div class="form-floating mb-4">
+                                <input type="password" id="password" class="form-control" formControlName="password" placeholder=""
+                                [ngClass]="{'is-invalid': fc['password'].invalid && (fc['password'].dirty || isSubmitted), 'is-valid': fc['password'].valid && fc['password'].dirty}"
+                                autocomplete="current-password" />
+                                <label class="form-label" for="password"><i class="fa-duotone fa-key"></i> Password</label>
+                                <small class="text-danger">
+                                    <span
+                                        *ngIf="fc['password'].hasError('required') && (fc['password'].dirty || isSubmitted)">Password
+                                        is
+                                        required.</span>
+                                    <span
+                                        *ngIf="fc['password'].hasError('minlength') && (fc['password'].dirty || isSubmitted)">Minimum
+                                        length
+                                        is 8 characters.</span>
+                                    <span
+                                        *ngIf="fc['password'].hasError('maxlength') && (fc['password'].dirty || isSubmitted)">Maximum
+                                        length
+                                        is 32 characters.</span>
+                                </small>
+                            </div>
+                            <!-- Checkbox -->
+                            <div class="form-check d-flex justify-content-center mb-4">
+                                <input class="form-check-input me-2" type="checkbox" formControlName="remember"
+                                    id="remember" />
+                                <label class="form-check-label" for="remember">
+                                    Remember me
+                                </label>
+                            </div>
+                            <strong class="text-danger row">
+                                <span *ngIf="isSubmitted && (errorMessage!=='')">{{errorMessage}}</span>
+                            </strong>
+                            <!-- Submit button -->
+                            <button type="submit" id="submit-btn" class="btn btn-danger btn-block mb-4" [disabled]="isValid || !form.valid">
+                                <i class="fa-duotone fa-right-to-bracket"></i> Login
+                            </button>
+                            <!-- Register buttons -->
+                            <div class="text-center">
+                                <p>Don't have an acccount? <a class="change-btn mb-4" (click)="changePage()">Register
+                                        Now!</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="register" *ngIf="register">
+        <div class="card mx-4 mx-md-5 shadow-5-strong fade-in" style="
+                margin-top: -100px;
+                background: hsla(0, 0%, 100%, 0.5);
+                backdrop-filter: blur(30px);
+                ">
+            <div class="card-body py-5 px-md-5">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <h1 class="fw-bold mb-2">Welcome to <b>NGShop</b></h1>
+                        <h2 class="fw-bold mb-5">Sign up now</h2>
+                        <form (submit)="signup()">
+                            <!-- 2 column grid layout with text inputs for the first and last names -->
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <input type="text" id="form3Example1" class="form-control" />
+                                        <label class="form-label" for="form3Example1">First name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <input type="text" id="form3Example2" class="form-control" />
+                                        <label class="form-label" for="form3Example2">Last name</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Email input -->
+                            <div class="form-outline mb-4">
+                                <input type="email" id="form3Example3" class="form-control" />
+                                <label class="form-label" for="form3Example3">Email address</label>
+                            </div>
+                            <!-- Password input -->
+                            <div class="form-outline mb-4">
+                                <input type="password" id="form3Example4" class="form-control" />
+                                <label class="form-label" for="form3Example4">Password</label>
+                            </div>
+                            <!-- Checkbox -->
+                            <div class="form-check d-flex justify-content-center mb-4">
+                                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33"
+                                    checked />
+                                <label class="form-check-label" for="form2Example33">
+                                    Subscribe to our newsletter
+                                </label>
+                            </div>
+                            <!-- Submit button -->
+                            <button type="submit" id="submit-btn" class="btn btn-primary btn-block mb-4">
+                                <i class="fa-duotone fa-user-plus"></i> Sign up
+                            </button>
+                            <!-- Register buttons -->
+                            <div class="text-center">
+                                <p>Have an acccount? <a class="change-btn mb-4" (click)="changePage()">Login Now!</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<ng-template #loadingBlock>
+    <div class="d-flex justify-content-center align-items-center" style="height: 80dvh;">
+        <h1><i class="fa-duotone fa-spinner fa-spin-pulse"></i> Loading something awesome</h1>
+    </div>
+</ng-template>
+
+<style>
+    .change-btn {
+        text-decoration: none;
+        user-select: none;
+        cursor: pointer;
+        color: var(--bs-danger);
+    }
+
+    .change-btn:hover {
+        color: var(--bs-warning);
+        transition: 350ms;
+    }
+
+    .fade-in {
+        opacity: 0;
+        animation: fadeInAnimation 350ms ease-in-out forwards;
+        /* Animation duration and timing function */
+    }
+
+    @keyframes fadeInAnimation {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+</style>

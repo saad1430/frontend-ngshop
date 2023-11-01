@@ -37,6 +37,7 @@ export class PaginatorComponent implements OnInit {
 	prev() {
 		if (this.currentEvent.first <= 0) return;
 		this.currentEvent.first = this.currentEvent.first - this.currentEvent.rows;
+		if (this.currentEvent.first < 0) this.currentEvent.first = 0;
 		this.currentPage -= 1;
 		this.updateFirstAndLastItems();
 		this.getPages();
@@ -71,6 +72,7 @@ export class PaginatorComponent implements OnInit {
 	goToPage(page: number) {
 		this.currentEvent.first =
 			page * this.currentEvent.rows - this.currentEvent.rows;
+		if (this.currentEvent.first < 0) this.currentEvent.first = 0;
 		this.currentPage = page;
 		this.getPages();
 		this.pageChange.emit(this.currentEvent);

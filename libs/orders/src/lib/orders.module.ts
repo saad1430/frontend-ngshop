@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, RouterModule, Route } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ordersRoutes } from './lib.routes';
 
 @NgModule({
