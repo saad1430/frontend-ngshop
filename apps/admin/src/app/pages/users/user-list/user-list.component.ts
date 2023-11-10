@@ -80,12 +80,12 @@ export class UserListComponent {
 		this.userService.toggleUserAdmin(id, id).subscribe({
 			next: (res) => {
 				this.toast.showSuccess(
-					`${res.name} is now a(n) ${res.isAdmin ? 'Admin' : 'User'}`,
+					`${res.name} is now ${res.isAdmin ? 'an Admin' : 'a User'}`,
 				);
 				this.loadUsers(this.currentEvent);
 			},
 			error: (error) => {
-				this.toast.showError("${res.name}'s role couldn't be toggled");
+				this.toast.showError(`Role couldn't be toggled`);
 				console.warn(error);
 				this.loadUsers(this.currentEvent);
 			},

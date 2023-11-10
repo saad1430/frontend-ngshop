@@ -38,6 +38,10 @@ input[type='number']::-webkit-outer-spin-button {
 	font-size: large;
 	transition: 400ms;
 }
+.transparency{
+	background: hsla(0, 0%, 100%, 0.1);
+    backdrop-filter: blur(30px);
+}
 /* For making something unselectable */
 .no-sel {
 	user-select: none;
@@ -46,7 +50,22 @@ input[type='number']::-webkit-outer-spin-button {
 	-ms-user-select: none;
 	-ms-touch-select: none;
 }
-/* Edit Profile Image Selection */
+/* custom scrollbar */
+body::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) !important;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+}
+body::-webkit-scrollbar {
+  width: 10px;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+}
+body::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) !important;
+  background-color: var(--bs-danger) !important;
+}
+/* Edit Image Selection */
 .hover {
 	cursor: pointer;
 	max-height: 205px;

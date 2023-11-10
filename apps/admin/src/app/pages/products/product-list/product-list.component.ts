@@ -15,7 +15,7 @@ export class ProductListComponent {
 	url = this.con.INIT_URL;
 	currentEvent: LazyLoadEvent;
 	firstItem = 1;
-	rows = 5;
+	rows = 10;
 	lastItem = this.rows;
 	dataIsLoaded = false;
 

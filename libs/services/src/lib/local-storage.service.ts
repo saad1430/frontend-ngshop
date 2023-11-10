@@ -8,15 +8,19 @@ export class LocalStorageService {
 
   // constructor() { }
 
-  setItem(key:any, value:any){
+  setItem(key:string, value:any){
     localStorage.setItem(key, value);
   }
 
-  getItem(key:any){
+  getItem(key:string){
    return localStorage.getItem(key);
   }
 
   clear(){
     localStorage.clear();
+  }
+
+  removeItem(key:string){
+    localStorage.removeItem(key);
   }
 }

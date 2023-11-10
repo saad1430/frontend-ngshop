@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg sticky-top">
+<nav class="navbar navbar-expand-lg sticky-top shadow transparency no-sel">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/">
       <img src="assets/images/logo.png" alt="NG Shop" height="50">
@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
       <div class="d-flex navbar-nav me-4">
-        <a class="nav-link" routerLinkActive="active" routerLink="/dashboard"><i
+        <a class="nav-link" routerLinkActive="active" [routerLink]="['']" [routerLinkActiveOptions]="{ exact: true }"><i
             class="far fa-home">&nbsp;</i>Dashboard</a>
         <a class="nav-link" routerLinkActive="active" routerLink="/categories"><i
             class="far fa-list">&nbsp;</i>Categories</a>
@@ -23,7 +23,7 @@
           <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="far fa-user">&nbsp;</i>{{name}}
           </a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu shadow">
             <li><p class="dropdown-item disabled" >{{email}}</p></li>
             <li>
               <hr class="dropdown-divider">
@@ -32,17 +32,32 @@
           </ul>
         </a>
         <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-disabled="true">Modal</a>
       </div>
     </div>
   </div>
 </nav>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content transparency text-white">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 <style>
   .active {
     color: var(--bs-danger) !important;
-  }
-  .navbar {
-    background: hsla(0, 0%, 100%, 0.1);
-    backdrop-filter: blur(30px);
   }
   .nav-link:hover, .dropdown-item:hover{
     color: red !important;

@@ -1,5 +1,7 @@
 import { Route } from '@angular/router';
 
+import { AuthGuard } from '@ecommerce/users';
+
 import { ShellComponent } from './shared/shell/shell.component';
 import { DashbaordComponent } from './pages/dashbaord/dashbaord.component';
 import { CategoryListComponent } from './pages/categories/category-list/category-list.component';
@@ -15,8 +17,9 @@ export const appRoutes: Route[] = [
 	{
 		path: '',
 		component: ShellComponent,
+		canActivate: [AuthGuard],
 		children: [
-			{ path: 'dashboard', component: DashbaordComponent },
+			{ path: '', component: DashbaordComponent },
 			{ path: 'categories', component: CategoryListComponent },
 			{ path: 'categories/new', component: CategoryFormComponent },
 			{ path: 'categories/edit/:id', component: CategoryFormComponent },

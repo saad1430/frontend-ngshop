@@ -4,4 +4,6 @@ import { Component } from '@angular/core';
   selector: 'admin-shell',
   templateUrl: './shell.component.html'
 })
-export class ShellComponent {}
+export class ShellComponent {
+
+}

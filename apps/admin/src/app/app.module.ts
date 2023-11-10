@@ -3,8 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { JwtInterceptor, UsersModule } from '@ecommerce/users';
 
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
@@ -31,7 +32,6 @@ import { UserListComponent } from './pages/users/user-list/user-list.component';
 import { UserFormComponent } from './pages/users/user-form/user-form.component';
 import { OrderListComponent } from './pages/orders/order-list/order-list.component';
 import { OrderDetailComponent } from './pages/orders/order-detail/order-detail.component';
-import { UsersModule } from '@ecommerce/users';
 
 const UX_MODULES = [
 	TableModule,
@@ -71,7 +71,7 @@ const UX_MODULES = [
 		HttpClientModule,
 		UX_MODULES,
 	],
-	providers: [MessageService, ConfirmationService],
+	providers: [MessageService, ConfirmationService, {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

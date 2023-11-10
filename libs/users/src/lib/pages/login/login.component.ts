@@ -86,10 +86,8 @@ export class LoginComponent implements OnInit {
 					}
 					this.toast.showSuccess(`User logged in successfully`);
 					console.log(res)
-					this.ls.setItem('name',res.name);
-					this.ls.setItem('email',res.email);
 					this.ls.setItem('token',res.token);
-					this.router.navigateByUrl('/dashboard');
+					this.router.navigateByUrl('/');
 				},
 				error: (error) => {
 					this.toast.showError("user couldn't be logged in");
