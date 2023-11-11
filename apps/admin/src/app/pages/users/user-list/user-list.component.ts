@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, LazyLoadEvent } from 'primeng/api';
 import { ConnectionStringService, ToastService } from '@ecommerce/services';
 import { User, UsersService } from '@ecommerce/users';
-import { catchError, throwError } from 'rxjs';
+import { Subject, catchError, takeUntil, throwError } from 'rxjs';
 
 @Component({
 	selector: 'admin-user-list',
 	templateUrl: './user-list.component.html',
 })
-export class UserListComponent {
+export class UserListComponent implements OnDestroy {
 	loading = true;
 	user: User[] = [];
 	totalUsers: number;
@@ -19,6 +19,7 @@ export class UserListComponent {
 	rows = 5;
 	lastItem = this.rows;
 	dataIsLoaded = false;
+	endSub$: Subject<any> = new Subject();
 
 	constructor(
 		private userService: UsersService,
@@ -27,6 +28,10 @@ export class UserListComponent {
 		private router: Router,
 		private con: ConnectionStringService,
 	) {}
+
+	ngOnDestroy(): void {
+		this.endSub$.complete();
+	}
 
 	deleteUser(id: string) {
 		this.confirmationService.confirm({
@@ -46,17 +51,20 @@ export class UserListComponent {
 	}
 
 	private proceedDeletion(id: string) {
-		this.userService.deleteUser(id).subscribe({
-			next: () => {
-				this.toast.showSuccess('User deleted successfully');
-				this.loadUsers(this.currentEvent);
-			},
-			error: (error) => {
-				this.toast.showError("User couldn't be deleted");
-				console.warn(error);
-				this.loadUsers(this.currentEvent);
-			},
-		});
+		this.userService
+			.deleteUser(id)
+			.pipe(takeUntil(this.endSub$))
+			.subscribe({
+				next: () => {
+					this.toast.showSuccess('User deleted successfully');
+					this.loadUsers(this.currentEvent);
+				},
+				error: (error) => {
+					this.toast.showError("User couldn't be deleted");
+					console.warn(error);
+					this.loadUsers(this.currentEvent);
+				},
+			});
 	}
 
 	toggleUserAdmin(id: string) {
@@ -77,7 +85,7 @@ export class UserListComponent {
 	}
 
 	private proceedToggling(id: string) {
-		this.userService.toggleUserAdmin(id, id).subscribe({
+		this.userService.toggleUserAdmin(id, id).pipe(takeUntil(this.endSub$)).subscribe({
 			next: (res) => {
 				this.toast.showSuccess(
 					`${res.name} is now ${res.isAdmin ? 'an Admin' : 'a User'}`,
@@ -114,6 +122,7 @@ export class UserListComponent {
 		setTimeout(() => {
 			return this.userService
 				.getUsers(first, rows, sortField, sortOrder)
+				.pipe(takeUntil(this.endSub$))
 				.pipe(
 					catchError(() => {
 						this.loading = false;

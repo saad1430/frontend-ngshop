@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, LazyLoadEvent } from 'primeng/api';
 import { ToastService } from '@ecommerce/services';
 import { Order, OrdersService } from '@ecommerce/orders';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'admin-order-list',
 	templateUrl: './order-list.component.html',
 })
-export class OrderListComponent {
+export class OrderListComponent implements OnDestroy {
 	loading = true;
 	orders: Order[] = [];
 	totalOrders: number;
@@ -18,7 +19,7 @@ export class OrderListComponent {
 	lastItem = this.rows;
 	dataIsLoaded = false;
 	order_status = this.orderService.ORDER_STATUS;
-
+	endSub$: Subject<any> = new Subject();
 
 	constructor(
 		private orderService: OrdersService,
@@ -26,6 +27,10 @@ export class OrderListComponent {
 		private confirmationService: ConfirmationService,
 		private router: Router,
 	) {}
+
+	ngOnDestroy(): void {
+		this.endSub$.complete();
+	}
 
 	deleteOrder(id: string) {
 		this.confirmationService.confirm({
@@ -45,24 +50,30 @@ export class OrderListComponent {
 	}
 
 	private proceedDeletion(id: string) {
-		this.orderService.deleteOrder(id).subscribe({
-			next: () => {
-				this.toast.showSuccess('Order deleted successfully');
-				this.loadOrders(this.currentEvent);
-			},
-			error: (error) => {
-				this.toast.showError("Order couldn't be deleted");
-				console.warn(error);
-				this.loadOrders(this.currentEvent);
-			},
-		});
+		this.orderService
+			.deleteOrder(id)
+			.pipe(takeUntil(this.endSub$))
+			.subscribe({
+				next: () => {
+					this.toast.showSuccess('Order deleted successfully');
+					this.loadOrders(this.currentEvent);
+				},
+				error: (error) => {
+					this.toast.showError("Order couldn't be deleted");
+					console.warn(error);
+					this.loadOrders(this.currentEvent);
+				},
+			});
 	}
 
 	private _getOrderCount() {
-		this.orderService.getOrdersCount().subscribe((count) => {
-			this.totalOrders = count;
-			this.dataIsLoaded = true;
-		});
+		this.orderService
+			.getOrdersCount()
+			.pipe(takeUntil(this.endSub$))
+			.subscribe((count) => {
+				this.totalOrders = count;
+				this.dataIsLoaded = true;
+			});
 	}
 
 	loadOrders(event: LazyLoadEvent) {
@@ -76,6 +87,7 @@ export class OrderListComponent {
 		setTimeout(() => {
 			return this.orderService
 				.getPrivateOrders(first, rows, sortField, sortOrder)
+				.pipe(takeUntil(this.endSub$))
 				.subscribe((data) => {
 					this.orders = data.data;
 					this.loading = false;

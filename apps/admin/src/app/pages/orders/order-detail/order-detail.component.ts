@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Order, OrdersService } from '@ecommerce/orders';
 import { ConnectionStringService, ToastService } from '@ecommerce/services';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'admin-order-detail',
 	templateUrl: './order-detail.component.html',
 })
-export class OrderDetailComponent implements OnInit {
+export class OrderDetailComponent implements OnInit, OnDestroy {
 	loading = false;
 	order?: Order;
 	form!: FormGroup;
@@ -20,6 +21,7 @@ export class OrderDetailComponent implements OnInit {
 	imageUrl: string;
 	order_status = this.orderService.ORDER_STATUS;
 	orderStatus = [];
+	endSub$: Subject<any> = new Subject();
 
 	constructor(
 		private fb: FormBuilder,
@@ -32,6 +34,10 @@ export class OrderDetailComponent implements OnInit {
 
 	ngOnInit() {
 		this._initForm();
+	}
+
+	ngOnDestroy(): void {
+		this.endSub$.complete();
 	}
 
 	get fc() {
@@ -71,7 +77,7 @@ export class OrderDetailComponent implements OnInit {
 					this.loading = false;
 				});
 			}
-		});
+		}).unsubscribe();
 	}
 
 	onSubmit() {
@@ -89,18 +95,21 @@ export class OrderDetailComponent implements OnInit {
 	}
 
 	private _update(order: Order) {
-		this.orderService.updateOrder(order, this.editingId).subscribe({
-			next: () => {
-				this.toast.showSuccess(`Order updated successfully`);
-				this.router.navigateByUrl('/orders');
-			},
-			error: (error) => {
-				this.toast.showError("Order couldn't be updated");
-				this.toast.showError(error, 'Error:', true);
-				this._cantSend();
-				console.warn(error);
-			},
-		});
+		this.orderService
+			.updateOrder(order, this.editingId)
+			.pipe(takeUntil(this.endSub$))
+			.subscribe({
+				next: () => {
+					this.toast.showSuccess(`Order updated successfully`);
+					this.router.navigateByUrl('/orders');
+				},
+				error: (error) => {
+					this.toast.showError("Order couldn't be updated");
+					this.toast.showError(error, 'Error:', true);
+					this._cantSend();
+					console.warn(error);
+				},
+			});
 	}
 
 	private _cantSend() {

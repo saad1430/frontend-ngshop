@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
@@ -8,12 +8,13 @@ import {
 	ProductsService,
 } from '@ecommerce/products';
 import { ConnectionStringService, ToastService } from '@ecommerce/services';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'admin-product-form',
 	templateUrl: './product-form.component.html',
 })
-export class ProductFormComponent implements OnInit {
+export class ProductFormComponent implements OnInit, OnDestroy {
 	loading = false;
 	product!: Product;
 	form!: FormGroup;
@@ -25,6 +26,7 @@ export class ProductFormComponent implements OnInit {
 	cat!: Category;
 	url = this.con.INIT_URL;
 	imageUrl: string;
+	endSub$: Subject<any> = new Subject();
 
 	constructor(
 		private fb: FormBuilder,
@@ -38,6 +40,10 @@ export class ProductFormComponent implements OnInit {
 
 	ngOnInit() {
 		this._initForm();
+	}
+
+	ngOnDestroy(): void {
+		this.endSub$.complete();
 	}
 
 	get fc() {
@@ -109,7 +115,7 @@ export class ProductFormComponent implements OnInit {
 					}
 				});
 			}
-		});
+		}).unsubscribe();
 	}
 
 	onSubmit() {
@@ -138,46 +144,51 @@ export class ProductFormComponent implements OnInit {
 	}
 
 	private _add(prod: FormData) {
-		this.productService.createProduct(prod).subscribe({
-			next: () => {
-				this.toast.showSuccess(
-					`Product added successfully`,
-				);
-				this.router.navigateByUrl('/products');
-			},
-			error: (error) => {
-				this.toast.showError("Product couldn't be added");
-				this.toast.showError(error, 'Error:', true);
-				this._cantSend();
-				console.warn(error);
-			},
-		});
+		this.productService
+			.createProduct(prod)
+			.pipe(takeUntil(this.endSub$))
+			.subscribe({
+				next: () => {
+					this.toast.showSuccess(`Product added successfully`);
+					this.router.navigateByUrl('/products');
+				},
+				error: (error) => {
+					this.toast.showError("Product couldn't be added");
+					this.toast.showError(error, 'Error:', true);
+					this._cantSend();
+					console.warn(error);
+				},
+			});
 	}
 
 	private _update(prod: FormData) {
-		this.productService.updateProduct(prod, this.editingId).subscribe({
-			next: () => {
-				this.toast.showSuccess(
-					`Product  updated successfully`,
-				);
-				this.router.navigateByUrl('/products');
-			},
-			error: (error) => {
-				this.toast.showError("Product couldn't be updated");
-				this.toast.showError(error, 'Error:', true);
-				this._cantSend();
-				console.warn(error);
-			},
-		});
+		this.productService
+			.updateProduct(prod, this.editingId)
+			.pipe(takeUntil(this.endSub$))
+			.subscribe({
+				next: () => {
+					this.toast.showSuccess(`Product  updated successfully`);
+					this.router.navigateByUrl('/products');
+				},
+				error: (error) => {
+					this.toast.showError("Product couldn't be updated");
+					this.toast.showError(error, 'Error:', true);
+					this._cantSend();
+					console.warn(error);
+				},
+			});
 	}
 
 	private _getCategories() {
-		this.categoryService.getCategories().subscribe((cat) => {
-			this.categories = cat;
-		});
+		this.categoryService
+			.getCategories()
+			.pipe(takeUntil(this.endSub$))
+			.subscribe((cat) => {
+				this.categories = cat;
+			});
 	}
 
-	private _cantSend(){
+	private _cantSend() {
 		this.isValid = false;
 		const element = document.getElementById('submit-btn');
 		if (element) {

@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, LazyLoadEvent } from 'primeng/api';
 import { ConnectionStringService, ToastService } from '@ecommerce/services';
 import { Product, ProductsService } from '@ecommerce/products';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'admin-product-list',
 	templateUrl: './product-list.component.html',
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnDestroy {
 	loading = true;
 	products: Product[] = [];
 	totalProducts: number;
@@ -18,6 +19,7 @@ export class ProductListComponent {
 	rows = 10;
 	lastItem = this.rows;
 	dataIsLoaded = false;
+	endSub$: Subject<any> = new Subject();
 
 	constructor(
 		private productService: ProductsService,
@@ -26,6 +28,10 @@ export class ProductListComponent {
 		private router: Router,
 		private con: ConnectionStringService,
 	) {}
+
+	ngOnDestroy(): void {
+		this.endSub$.complete();
+	}
 
 	deleteProduct(id: string) {
 		this.confirmationService.confirm({
@@ -45,24 +51,30 @@ export class ProductListComponent {
 	}
 
 	private proceedDeletion(id: string) {
-		this.productService.deleteProduct(id).subscribe({
-			next: () => {
-				this.toast.showSuccess('Product deleted successfully');
-				this.loadProducts(this.currentEvent);
-			},
-			error: (error) => {
-				this.toast.showError("Product couldn't be deleted");
-				console.warn(error);
-				this.loadProducts(this.currentEvent);
-			},
-		});
+		this.productService
+			.deleteProduct(id)
+			.pipe(takeUntil(this.endSub$))
+			.subscribe({
+				next: () => {
+					this.toast.showSuccess('Product deleted successfully');
+					this.loadProducts(this.currentEvent);
+				},
+				error: (error) => {
+					this.toast.showError("Product couldn't be deleted");
+					console.warn(error);
+					this.loadProducts(this.currentEvent);
+				},
+			});
 	}
 
 	private _getProductCount() {
-		this.productService.getProductsCount().subscribe((count) => {
-			this.totalProducts = count;
-			this.dataIsLoaded = true;
-		});
+		this.productService
+			.getProductsCount()
+			.pipe(takeUntil(this.endSub$))
+			.subscribe((count) => {
+				this.totalProducts = count;
+				this.dataIsLoaded = true;
+			});
 	}
 
 	editProduct(id: string) {
@@ -80,6 +92,7 @@ export class ProductListComponent {
 		setTimeout(() => {
 			return this.productService
 				.getProducts(first, rows, sortField, sortOrder)
+				.pipe(takeUntil(this.endSub$))
 				.subscribe((prod) => {
 					this.products = prod;
 					this.loading = false;
