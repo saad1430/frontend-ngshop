@@ -1,9 +1,80 @@
-<div class="owl-carousel" id="owl">
-    <div> Your Content </div>
-    <div> Your Content </div>
-    <div> Your Content </div>
-    <div> Your Content </div>
-    <div> Your Content </div>
-    <div> Your Content </div>
-    <div> Your Content </div>
-</div>
+<owl-carousel-o [options]="customOptions">
+    <ng-template carouselSlide>
+        <div class="item">
+            <div class="card border-0 zoom-in bg-owl-1">
+                <div class="card-body">
+                    <div class="text-center">
+                        <i class="mb-3 fs-1 fa-duotone fa-briefcase"></i>
+                        <p class="fw-semibold fs-3 mb-1"> Products </p>
+                        <h5 class="fw-semibold mb-0">{{products || 0}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template carouselSlide>
+        <div class="item">
+            <div class="card border-0 zoom-in bg-owl-2">
+                <div class="card-body">
+                    <div class="text-center">
+                        <i class="mb-3 fs-1 fa-duotone fa-list-tree"></i>
+                        <p class="fw-semibold fs-3 mb-1"> Categories </p>
+                        <h5 class="fw-semibold mb-0">{{categories || 0}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template carouselSlide>
+        <div class="item">
+            <div class="card border-0 zoom-in bg-owl-3">
+                <div class="card-body">
+                    <div class="text-center">
+                        <i class="mb-3 fs-1 fa-duotone fa-users"></i>
+                        <p class="fw-semibold fs-3 mb-1"> Users </p>
+                        <h5 class="fw-semibold mb-0">{{users || 0}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template carouselSlide>
+        <div class="item">
+            <div class="card border-0 zoom-in bg-owl-4">
+                <div class="card-body">
+                    <div class="text-center">
+                        <i class="mb-3 fs-1 fa-duotone fa-user-shield"></i>
+                        <p class="fw-semibold fs-3 mb-1"> Admins </p>
+                        <h5 class="fw-semibold mb-0">{{admins || 0}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template carouselSlide>
+        <div class="item">
+            <div class="card border-0 zoom-in bg-owl-5">
+                <div class="card-body">
+                    <div class="text-center">
+                        <i class="mb-3 fs-1 fa-duotone fa-bags-shopping"></i>
+                        <p class="fw-semibold fs-3 mb-1"> Orders </p>
+                        <h5 class="fw-semibold mb-0">{{orders || 0}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template carouselSlide>
+        <div class="item">
+            <div class="card border-0 zoom-in bg-owl-6">
+                <div class="card-body">
+                    <div class="text-center">
+                        <i class="mb-3 fs-1 fa-duotone fa-money-bills"></i>
+                        <p class="fw-semibold fs-3 mb-1"> Sales </p>
+                        <h5 class="fw-semibold mb-0">Rs. {{sales || 0}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</owl-carousel-o>

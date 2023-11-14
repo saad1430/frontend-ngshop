@@ -16,6 +16,10 @@ export class CategoriesService {
 		return this.http.get<Icons[]>(`${this.URL}icon`);
 	}
 
+	getCategoriesCount(): Observable<any> {
+		return this.http.get<any>(`${this.URL}category/count/cat`);
+	}
+
 	getCategories(): Observable<Category[]> {
 		return this.http.get<Category[]>(`${this.URL}category`);
 	}

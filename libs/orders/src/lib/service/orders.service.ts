@@ -43,6 +43,10 @@ export class OrdersService {
 		return this.http.get<Order>(`${this.URL}/public/one/${OrderId}`);
 	}
 
+	getSales(): Observable<any> {
+		return this.http.get<any>(`${this.URL}/private/totalsales/`);
+	}
+
 	createOrder(Order: FormData): Observable<any> {
 		return this.http.post<any>(`${this.URL}/create`, Order);
 	}

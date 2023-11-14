@@ -3,6 +3,9 @@
 @import '../../../shared/admin-global.scss';
 // Font Awesome Icons
 @import './icons/css/all.min.css';
+// OWL Carousel
+@import 'ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@import 'ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
 // Custom CSS
 .admin- {
 	&body {
@@ -38,9 +41,133 @@ input[type='number']::-webkit-outer-spin-button {
 	font-size: large;
 	transition: 400ms;
 }
-.transparency{
+.transparency {
 	background: hsla(0, 0%, 100%, 0.1);
-    backdrop-filter: blur(30px);
+	backdrop-filter: blur(30px);
+}
+.item {
+	margin: 15px;
+	filter: drop-shadow(0px 2px 5px #000);
+}
+.bg-owl-1 {
+	background: rgb(0, 76, 101);
+	background: -moz-linear-gradient(
+		210deg,
+		rgba(0, 76, 101, 1) 0%,
+		rgba(0, 255, 245, 1) 100%
+	);
+	background: -webkit-linear-gradient(
+		210deg,
+		rgba(0, 76, 101, 1) 0%,
+		rgba(0, 255, 245, 1) 100%
+	);
+	background: linear-gradient(
+		210deg,
+		rgba(0, 76, 101, 1) 0%,
+		rgba(0, 255, 245, 1) 100%
+	);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#004c65",endColorstr="#00fff5",GradientType=1);
+	color: rgb(0, 255, 245);
+}
+.bg-owl-2 {
+	background: rgb(254, 255, 254);
+	background: -moz-linear-gradient(
+		210deg,
+		rgba(254, 255, 254, 1) 0%,
+		rgba(0, 0, 0, 1) 100%
+	);
+	background: -webkit-linear-gradient(
+		210deg,
+		rgba(254, 255, 254, 1) 0%,
+		rgba(0, 0, 0, 1) 100%
+	);
+	background: linear-gradient(
+		210deg,
+		rgba(254, 255, 254, 1) 0%,
+		rgba(0, 0, 0, 1) 100%
+	);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fefffe",endColorstr="#000000",GradientType=1);
+	color: rgba(254, 255, 254, 1);
+}
+.bg-owl-3 {
+	background: rgb(211, 95, 255);
+	background: -moz-linear-gradient(
+		210deg,
+		rgba(211, 95, 255, 1) 0%,
+		rgba(255, 65, 65, 1) 100%
+	);
+	background: -webkit-linear-gradient(
+		210deg,
+		rgba(211, 95, 255, 1) 0%,
+		rgba(255, 65, 65, 1) 100%
+	);
+	background: linear-gradient(
+		210deg,
+		rgba(211, 95, 255, 1) 0%,
+		rgba(255, 65, 65, 1) 100%
+	);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d35fff",endColorstr="#ff4141",GradientType=1);
+	color: rgba(211, 95, 255, 1);
+}
+.bg-owl-4 {
+	background: rgb(255, 255, 255);
+	background: -moz-linear-gradient(
+		210deg,
+		rgba(255, 255, 255, 1) 0%,
+		rgba(253, 0, 255, 1) 100%
+	);
+	background: -webkit-linear-gradient(
+		210deg,
+		rgba(255, 255, 255, 1) 0%,
+		rgba(253, 0, 255, 1) 100%
+	);
+	background: linear-gradient(
+		210deg,
+		rgba(255, 255, 255, 1) 0%,
+		rgba(253, 0, 255, 1) 100%
+	);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#fd00ff",GradientType=1);
+	color: rgba(255, 255, 255, 1);
+}
+.bg-owl-5 {
+	background: rgb(233, 115, 240);
+	background: -moz-linear-gradient(
+		210deg,
+		rgba(233, 115, 240, 1) 0%,
+		rgba(245, 154, 22, 1) 100%
+	);
+	background: -webkit-linear-gradient(
+		210deg,
+		rgba(233, 115, 240, 1) 0%,
+		rgba(245, 154, 22, 1) 100%
+	);
+	background: linear-gradient(
+		210deg,
+		rgba(233, 115, 240, 1) 0%,
+		rgba(245, 154, 22, 1) 100%
+	);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#e973f0",endColorstr="#f59a16",GradientType=1);
+	color:rgba(233, 115, 240, 1);
+}
+.bg-owl-6 {
+	background: rgb(255, 255, 255);
+	background: -moz-linear-gradient(
+		210deg,
+		rgba(255, 255, 255, 1) 0%,
+		rgba(16, 174, 5, 1) 100%
+	);
+	background: -webkit-linear-gradient(
+		210deg,
+		rgba(255, 255, 255, 1) 0%,
+		rgba(16, 174, 5, 1) 100%
+	);
+	background: linear-gradient(
+		210deg,
+		rgba(255, 255, 255, 1) 0%,
+		rgba(16, 174, 5, 1) 100%
+	);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#10ae05",GradientType=1);
+	color: rgba(255, 255, 255, 1);
 }
 /* For making something unselectable */
 .no-sel {
@@ -52,18 +179,18 @@ input[type='number']::-webkit-outer-spin-button {
 }
 /* custom scrollbar */
 body::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) !important;
-  border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.3) !important;
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) !important;
+	border-radius: 10px;
+	background-color: rgba(0, 0, 0, 0.3) !important;
 }
 body::-webkit-scrollbar {
-  width: 10px;
-  background-color: rgba(0, 0, 0, 0.3) !important;
+	width: 10px;
+	background-color: rgba(0, 0, 0, 0.3) !important;
 }
 body::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) !important;
-  background-color: var(--bs-danger) !important;
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3) !important;
+	background-color: var(--bs-danger) !important;
 }
 /* Edit Image Selection */
 .hover {

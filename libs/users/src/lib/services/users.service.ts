@@ -30,6 +30,14 @@ export class UsersService {
 		return this.http.get<number>(`${this.URL}/count`);
 	}
 
+	getOnlyUsersCount(): Observable<number> {
+		return this.http.get<number>(`${this.URL}/countusers`);
+	}
+
+	getOnlyAdminsCount(): Observable<number> {
+		return this.http.get<number>(`${this.URL}/countadmins`);
+	}
+
 	getUser(UserId: string): Observable<any> {
 		return this.http.get<any>(`${this.URL}/one/${UserId}`);
 	}

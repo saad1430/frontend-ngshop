@@ -17,6 +17,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
 
 import { QuillModule } from 'ngx-quill';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 
 import { AppComponent } from './app.component';
 import { DashbaordComponent } from './pages/dashbaord/dashbaord.component';
@@ -42,6 +43,7 @@ const UX_MODULES = [
 	InputNumberModule,
 	QuillModule,
 	DropdownModule,
+	CarouselModule,
 ];
 
 @NgModule({
